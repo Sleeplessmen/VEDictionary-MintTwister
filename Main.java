@@ -4,15 +4,30 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        Dictionary dictionary = new Dictionary();
+        DictionaryCommandline newCommandLine = new DictionaryCommandline();
+        char c;
+        do {
+            System.out.println("*****Dictionary CommandLine*****");
+            System.out.println("0: Exit");
+            System.out.println("1: DictionaryBasic");
+            System.out.println("2: DictionaryAdvanced");
 
-        DictionaryCommandline.showAllWords(dictionary);
+            Scanner reader = new Scanner(System.in);
+            c = reader.next().charAt(0);
 
-        Word word = new Word("new", "mới");
-        dictionary.addWord(word);
-
-        DictionaryCommandline.showAllWords(dictionary);
-
-        DictionaryCommandline.dictionaryBasic(dictionary);
+            switch (c) {
+                case '0':
+                    System.out.println("Closing app ...");
+                    break;
+                case '1':
+                    newCommandLine.dictionaryBasic();
+                    break;
+                case '2':
+                    newCommandLine.dictionaryAdvanced();
+                    break;
+                default:
+                    break;
+            }
+        } while (c !='0');
     }
 }
