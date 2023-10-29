@@ -1,29 +1,16 @@
-package com.example.guiversion;
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
-import javafx.scene.Group;
-import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.scene.*;
 import atlantafx.base.theme.*;
 
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class DictApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
@@ -61,4 +48,5 @@ public class HelloApplication extends Application {
         }
 
     }
+
 }

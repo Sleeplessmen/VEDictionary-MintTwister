@@ -1,3 +1,5 @@
+package src.base;
+
 public class Word {
 
     private String wordTarget;

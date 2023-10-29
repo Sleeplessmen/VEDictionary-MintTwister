@@ -1,3 +1,5 @@
+package src.base;
+
 import java.util.Scanner;
 
 public class DictionaryCommandline {
