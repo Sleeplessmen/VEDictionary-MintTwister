@@ -5,17 +5,17 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         DictionaryCommandline newCommandLine = new DictionaryCommandline();
-        char c;
+        char query;
         do {
             System.out.println("*****Dictionary CommandLine*****");
             System.out.println("0: Exit");
             System.out.println("1: DictionaryBasic");
             System.out.println("2: DictionaryAdvanced");
-
+            System.out.println("Your action:");
             Scanner reader = new Scanner(System.in);
-            c = reader.next().charAt(0);
+            query = reader.next().charAt(0);
 
-            switch (c) {
+            switch (query) {
                 case '0':
                     System.out.println("Closing app ...");
                     break;
@@ -28,6 +28,6 @@ public class Main {
                 default:
                     break;
             }
-        } while (c !='0');
+        } while (query != '0');
     }
 }

@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class DictionaryCommandline {
     DictionaryManagement myDictionaryMng = new DictionaryManagement();
 
-
     public void dictionaryBasic() {
         Scanner reader = new Scanner(System.in);
         System.out.println("*****Dictionary Basic*****\n");
