@@ -24,5 +24,4 @@ public class Word {
     public String getWord_explain() {
         return this.word_explain;
     }
-
 }

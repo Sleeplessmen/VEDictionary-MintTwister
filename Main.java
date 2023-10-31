@@ -11,13 +11,13 @@ public class Main {
             System.out.println("0: Exit");
             System.out.println("1: DictionaryBasic");
             System.out.println("2: DictionaryAdvanced");
-            System.out.println("Your action:");
+            System.out.print("Your action: ");
             Scanner reader = new Scanner(System.in);
             query = reader.next().charAt(0);
 
             switch (query) {
                 case '0':
-                    System.out.println("Closing app ...");
+                    System.out.println("Closing Dictionary ...");
                     break;
                 case '1':
                     newCommandLine.dictionaryBasic();
