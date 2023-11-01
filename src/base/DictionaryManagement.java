@@ -1,49 +1,1 @@
-package src.base;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
-public class DictionaryManagement {
-
-    public static void insertFromCommandLine(Dictionary dictionary) {
-        System.out.println("Nhập số lượng từ vựng: ");
-        Scanner scanner = new Scanner(System.in);
-        int n = Integer.parseInt(scanner.nextLine());
-
-        for (int i = 0; i < n; i++) {
-            System.out.println("Nhập từ vựng thứ " + (i + 1) + ": ");
-            String wordTarget = scanner.nextLine();
-
-            System.out.println("Nhập giải thích của từ vựng: ");
-            String wordExplain = scanner.nextLine();
-
-            dictionary.addWord(new Word(wordTarget, wordExplain));
-        }
-    }
-
-    public static void insertFromFile(Dictionary dictionary) throws FileNotFoundException, IOException {
-        // Mở tệp dictionaries.txt
-        File file = new File("dtb.txt");
-        Scanner scanner = new Scanner(file);
-
-        // Lặp qua từng dòng trong tệp
-        while (scanner.hasNextLine()) {
-            // Lấy từ tiếng anh và giải thích tiếng việt từ dòng hiện tại
-            String line = scanner.nextLine();
-            String[] words = line.split("\t");
-
-            // Tạo một từ vựng mới
-            Word word = new Word(words[0], words[1]);
-
-            // Thêm từ vựng vào từ điển
-            dictionary.addWord(word);
-        }
-
-        // Đóng tệp
-        scanner.close();
-    }
-}
+import java.io.*;import java.util.*;public class DictionaryManagement extends Dictionary {    private static final String INPUTFILEPATH = "FirstverDictionary.txt";    private static final String OUTPUTFILEPATH = "OutputDictionaryFile.txt";    public void showAllWords() {        int counter = 1;        System.out.printf("%-5s%-15s%-15s%n", "No", "| English", "| Vietnamese");        for(Word word : listWord) {            System.out.printf("%-5s%-15s%-15s%n", counter++, "| " + word.getWord_target(), "| " + word.getWord_explain());        }    }    public void insertFromCommandLine() {        Scanner scanner = new Scanner(System.in);        int NumberOfWords = 0;        boolean validInput = false;        while (!validInput) {            System.out.print("Number of words: ");            try {                NumberOfWords = Integer.parseInt(scanner.nextLine());                validInput = true;            } catch (NumberFormatException e) {                System.out.println("Invalid input. Please enter an integer.");            }        }        for (int i = 0; i < NumberOfWords; i++) {            Word word = new Word();            System.out.println("Enter a new word: ");            word.setWord_target(scanner.nextLine());            System.out.println("Enter meanings of the word: ");            word.setWord_explain(scanner.nextLine());            listWord.add(word);        }    }    public void insertFromFile() {        try {            BufferedReader reader = new BufferedReader(new FileReader(INPUTFILEPATH));            String line;            while ((line = reader.readLine()) != null) {                String[] input = line.split(",");                if (input.length == 2) {//                    String wordTarget = input[0].trim();//                    String wordExplain = input[1].trim();                    Word word = new Word(input[0], input[1]);                    listWord.add(word);                } else {                    System.out.println("Wrong format of input file!!");                    break;                }            }            System.out.println("The word has been successfully inserted from the file.");        } catch (IOException e) {            System.out.println("Error reading file: " + e.getMessage());        }    }    public void dictionaryLookup() {        System.out.print("enter the keyword: ");        Scanner scan = new Scanner(System.in);        String a = scan.nextLine();        listWord.stream().filter((i) ->                        (i.getWord_target().equals(a))).                forEachOrdered( (i) -> System.out.println(i.getWord_explain()));    }    public void ExportWordToFile() {//        try {//            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(OUTPUTFILEPATH)));//        }    }    public void insertWord() {        Scanner scan = new Scanner(System.in);        System.out.print("Enter the word to add: ");        String stringWord = scan.nextLine();        boolean check = false;        for(Word w : listWord) {            if(w.getWord_target().equalsIgnoreCase(stringWord)) {                System.out.println("The word ís already in the ");                check = true;                break;            }        }        if(!check) {            System.out.print("Enter the meaning of the word: ");            String ex = scan.nextLine();            listWord.add(new Word(stringWord, ex));            System.out.println("Insert word successfully.");        }    }    public void removeWord() {        Scanner scan = new Scanner(System.in);        System.out.print("Enter the word to remove: ");        String target = scan.nextLine();        boolean check = false;        for(Word w : listWord) {            if(w.getWord_target().equalsIgnoreCase(target)) {                listWord.remove(w);                check = true; break;            }        }        if(check) {            System.out.println("Remove word successfully.");        }        else {            System.out.println("The word does not exist in the ");        }    }    public void editWord() {        System.out.print("Enter the word to edit: ");        Scanner scan = new Scanner(System.in);        String word = scan.nextLine();        boolean check = false;        for(Word w : listWord) {            if(w.getWord_target().equalsIgnoreCase(word)) {                System.out.print("Enter the alternative word: ");                String target = scan.nextLine();                w.setWord_target(target);                System.out.print("Enter the meaning of the alternative word: ");                String explain = scan.nextLine();                w.setWord_explain(explain);                check = true;                break;            }        }        if(!check) {            System.out.println("The word does not exist in the ");        }    }    public void dictionarySearcher() {        System.out.print("Enter the keyword to search: ");        Scanner scan = new Scanner(System.in);        String s = scan.nextLine();        listWord.forEach((i) -> {            int index = i.getWord_target().indexOf(s);            if(index == 0) {                System.out.println(i.getWord_target());            }        });    }}

@@ -1,32 +1,29 @@
 package src.base;
 
 public class Word {
+    private String word_target;
+    private String word_explain;
 
-    private String wordTarget;
-    private String wordExplain;
+    public Word() {}
 
-    public Word() {
+    public Word(String wt, String we) {
+        word_target = wt;
+        word_explain = we;
     }
 
-    public Word(String wordTarget, String wordExplain) {
-        this.wordTarget = wordTarget;
-        this.wordExplain = wordExplain;
+    public void setWord_target(String wt) {
+        word_target = wt;
     }
 
-    public String getWordTarget() {
-        return wordTarget;
+    public void setWord_explain(String we) {
+        word_explain = we;
     }
 
-    public void setWordTarget(String wordTarget) {
-        this.wordTarget = wordTarget;
+    public String getWord_target() {
+        return this.word_target;
     }
 
-    public String getWordExplain() {
-        return wordExplain;
+    public String getWord_explain() {
+        return this.word_explain;
     }
-
-    public void setWordExplain(String wordExplain) {
-        this.wordExplain = wordExplain;
-    }
-
 }
