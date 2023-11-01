@@ -37,9 +37,9 @@ public class DictApplication extends Application {
     }
     public void logout(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Thoát?");
-        alert.setHeaderText("Muốn thoát sao homie?");
-        alert.setContentText("Muốn save không homie?");
+        alert.setTitle("Exiting...");
+        alert.setHeaderText("Bạn đang muốn thoát?");
+        alert.setContentText("Nếu có, hãy bấm OK");
 
         if(alert.showAndWait().get() == ButtonType.OK) {
             //stage = (Stage) scenePane.getScene().getWindow();
@@ -48,5 +48,4 @@ public class DictApplication extends Application {
         }
 
     }
-
 }

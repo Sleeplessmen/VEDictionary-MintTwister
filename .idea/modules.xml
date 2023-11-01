@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/VEDictionary-MintTwister.iml" filepath="$PROJECT_DIR$/VEDictionary-MintTwister.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DictApplication.iml" filepath="$PROJECT_DIR$/DictApplication.iml" />
     </modules>
   </component>
 </project>

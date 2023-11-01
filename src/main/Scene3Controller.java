@@ -1,4 +1,3 @@
-package com.example.guiversion;
 
 import java.net.URL;
 import java.util.ResourceBundle;

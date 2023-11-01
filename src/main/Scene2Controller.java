@@ -1,4 +1,3 @@
-package com.example.guiversion;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
