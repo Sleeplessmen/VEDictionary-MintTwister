@@ -1,0 +1,26 @@
+bear     con gấu null           
+cat      con mèo null           
+dog      con chó null           
+elephant con voi null           
+fish     con cá null           
+goose    con ngỗng null           
+horse    con ngựa null           
+ice-cream    kem null           
+juice    nước ép null           
+key      cái khóa null           
+lion     con sư tử null           
+mouse    con chuột null           
+nut      hạt    null           
+orange   quả cam null           
+pig      con lợn null           
+queen    nữ hoàng null           
+rabbit   con thỏ null           
+sun      mặt trời null           
+tiger    con hổ null           
+umbrella cái ô  null           
+violin   đàn vi ô lông null           
+wolf     con sói null           
+xylophone    mộc cầm null           
+yacht    du thuyền null           
+zebra    con ngựa vằn null           
+apple    quả táo null
