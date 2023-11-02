@@ -34,6 +34,8 @@ public class Scene1Controller implements Initializable {
 
     @FXML
     private MenuItem importFile;
+    @FXML
+    private ImageView bgImage;
 
     @FXML
     void exportToFile(ActionEvent event) {

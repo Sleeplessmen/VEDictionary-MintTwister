@@ -25,6 +25,7 @@ public class DictApplication extends Application {
             stage.setTitle("chit fumo");
             stage.setWidth(1280);
             stage.setHeight(720);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
             stage.setOnCloseRequest(event -> {
