@@ -17,7 +17,7 @@ public class DictApplication extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("scene1.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
             Scene scene = new Scene(root);
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
             Image icon = new Image("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\GUIVersion\\GUIVersion\\src\\icon.jpg");

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Scene1Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMenuController">
    <children>
       <ImageView fx:id="bgImage" fitHeight="736.0" fitWidth="1341.0" layoutX="-61.0" layoutY="-15.0" mouseTransparent="true" opacity="0.3" style="-fx-blend-mode: screen;">
          <image>
@@ -98,7 +98,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="1120.0" layoutY="630.0" mnemonicParsing="false" text="Game" textFill="#ebebec">
+      <Button layoutX="1120.0" layoutY="624.0" mnemonicParsing="false" text="Game" textFill="#ebebec">
          <font>
             <Font name="Roboto Mono Regular" size="18.0" />
          </font>
@@ -111,6 +111,15 @@
          </graphic>
       </Button>
       <TextArea layoutX="26.0" layoutY="159.0" prefHeight="446.0" prefWidth="248.0" />
-      <TextArea layoutX="307.0" layoutY="160.0" prefHeight="446.0" prefWidth="907.0" />
+      <TextArea editable="false" layoutX="307.0" layoutY="160.0" prefHeight="446.0" prefWidth="907.0" />
+      <Button fx:id="settingButton" contentDisplay="GRAPHIC_ONLY" layoutX="26.0" layoutY="614.0" mnemonicParsing="false" onAction="#switchToSetting" prefHeight="40.0" prefWidth="40.0" text="Button">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0">
+               <image>
+                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/settingIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
