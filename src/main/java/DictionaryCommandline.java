@@ -35,13 +35,13 @@ public class DictionaryCommandline {
         System.out.println("[0] Exit");
         System.out.println("[1] Add");
         System.out.println("[2] Remove");
-        System.out.println("[3] Update");
+        System.out.println("[3] Modify");
         System.out.println("[4] Display");
         System.out.println("[5] Lookup");
         System.out.println("[6] Search");
-        System.out.println("[7] Game");
-        System.out.println("[8] Import word from file");
-        System.out.println("[9] Export to file");
+        System.out.println("[7] Multiple-Choice Game");
+        System.out.println("[8] Import dictionary from file");
+        System.out.println("[9] Export dictionary to file");
         System.out.print("Your action: ");
 
         char query = scanner.next().charAt(0);
@@ -105,6 +105,7 @@ public class DictionaryCommandline {
                     newCommandLine.dictionaryAdvanced();
                     break;
                 default:
+                    System.out.println("Action not supported.");
                     break;
             }
         } while (query != '0');
