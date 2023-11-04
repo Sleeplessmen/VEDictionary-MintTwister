@@ -2,21 +2,66 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="settingController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="settingController">
    <children>
-      <Label layoutX="161.0" layoutY="62.0" text="Scene 2 desu">
-         <font>
-            <Font size="48.0" />
-         </font>
-      </Label>
-      <Button layoutX="202.0" layoutY="310.0" mnemonicParsing="false" onAction="#switchToScene1" text="Back to scene 1">
-         <font>
-            <Font size="24.0" />
-         </font>
+      <TabPane prefHeight="720.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Chủ đề">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <RadioButton fx:id="themeNordDark" layoutX="315.0" layoutY="147.0" mnemonicParsing="false" onAction="#getTheme" text="Nord">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="Themes" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="themePrimierDark" layoutX="315.0" layoutY="347.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeDracula" layoutX="315.0" layoutY="247.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <Label layoutX="313.0" layoutY="26.0" text="Chọn chủ đề ở đây">
+                           <font>
+                              <Font size="48.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="WIP">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button fx:id="backButton" contentDisplay="GRAPHIC_ONLY" layoutX="1139.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchToMainMenu" prefHeight="23.0" prefWidth="3.0" text="Button">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0">
+               <image>
+                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/exitIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </AnchorPane>
