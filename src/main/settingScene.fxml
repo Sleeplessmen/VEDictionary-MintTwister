@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="settingController">
    <children>
       <TabPane prefHeight="720.0" prefWidth="1024.0" tabClosingPolicy="UNAVAILABLE">
@@ -40,7 +39,7 @@
                         </RadioButton>
                         <Label layoutX="313.0" layoutY="26.0" text="Chọn chủ đề ở đây">
                            <font>
-                              <Font size="48.0" />
+                              <Font name="Roboto Mono Regular" size="48.0" />
                            </font>
                         </Label>
                      </children>
@@ -58,10 +57,15 @@
          <graphic>
             <ImageView fitHeight="40.0" fitWidth="40.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/exitIcon.png" />
+                  <Image url="@/exitIcon.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
+      <ImageView blendMode="SCREEN" fitHeight="720.0" fitWidth="1280.0" mouseTransparent="true" opacity="0.4">
+         <image>
+            <Image url="@/BG.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

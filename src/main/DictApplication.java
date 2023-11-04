@@ -20,7 +20,7 @@ public class DictApplication extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
             Scene scene = new Scene(root);
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-            Image icon = new Image("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\GUIVersion\\GUIVersion\\src\\icon.jpg");
+            Image icon = new Image("icon.jpg");
             stage.getIcons().add(icon);
             stage.setTitle("chit fumo");
             stage.setWidth(1280);

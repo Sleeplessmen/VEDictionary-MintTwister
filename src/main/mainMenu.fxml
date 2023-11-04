@@ -16,7 +16,7 @@
    <children>
       <ImageView fx:id="bgImage" fitHeight="736.0" fitWidth="1341.0" layoutX="-61.0" layoutY="-15.0" mouseTransparent="true" opacity="0.3" style="-fx-blend-mode: screen;">
          <image>
-            <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/BG.png" />
+            <Image url="@/BG.png" />
          </image>
       </ImageView>
       <MenuBar layoutY="-5.0" prefHeight="38.0" prefWidth="1282.0">
@@ -57,7 +57,7 @@
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/addIcon.png" />
+                  <Image url="@/addIcon.png" />
                </image>
             </ImageView>
          </graphic>
@@ -69,7 +69,7 @@
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/deleteIcon.png" />
+                  <Image url="@/deleteIcon.png" />
                </image>
             </ImageView>
          </graphic>
@@ -81,7 +81,7 @@
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/editIcon.png" />
+                  <Image url="@/editIcon.png" />
                </image>
             </ImageView>
          </graphic>
@@ -93,7 +93,7 @@
          <graphic>
             <ImageView fitHeight="28.0" fitWidth="28.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/ggTransIcon.png" />
+                  <Image url="@/ggTransIcon.png" />
                </image>
             </ImageView>
          </graphic>
@@ -105,7 +105,7 @@
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/gameIcon.png" />
+                  <Image url="@/gameIcon.png" />
                </image>
             </ImageView>
          </graphic>
@@ -116,7 +116,7 @@
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
                <image>
-                  <Image url="file:/C:/Users/cusnaruto/Downloads/Uni%20Stuffs/OOP/BigProject/VEDictionary-MintTwister/src/resources/settingIcon.png" />
+                  <Image url="@/settingIcon.png" />
                </image>
             </ImageView>
          </graphic>
