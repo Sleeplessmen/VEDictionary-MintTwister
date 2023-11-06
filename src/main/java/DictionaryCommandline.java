@@ -68,6 +68,7 @@ public class DictionaryCommandline {
                 myDictionaryMng.dictionarySearcher();
                 break;
             case '7':
+                DictionaryManagement.mcq();
                 break;
             case '8':
                 myDictionaryMng.insertWordFromFile();

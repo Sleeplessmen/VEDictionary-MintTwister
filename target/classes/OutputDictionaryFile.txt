@@ -22,7 +22,6 @@ comment        binh luan
 company        cong ty        
 country        dat nuoc       
 cow            bo             
-dad            bo             
 deep           sau            
 delete         loai bo        
 develope       phat trien     
@@ -65,7 +64,6 @@ lost           mat
 low            thap           
 lunch          trua           
 math           toan           
-mom            me             
 morning        sang           
 parent         bo me noi chung
 police         canh sat       
@@ -74,7 +72,7 @@ problem        van de
 process        qua trinh      
 product        san xuat       
 production     san pham       
-profession     chuyen nghiep  
+profession     su chuyen nghiep
 professor      giao su        
 profile        ho so          
 prohibit       cam            
@@ -101,4 +99,4 @@ ultimate       dot pha
 union          vung mien      
 vietnam        viet nam       
 world          the gioi       
-﻿mom           me             
+dad            bo
