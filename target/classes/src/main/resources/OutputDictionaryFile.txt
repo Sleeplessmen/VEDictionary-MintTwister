@@ -22,6 +22,7 @@ comment        binh luan
 company        cong ty        
 country        dat nuoc       
 cow            bo             
+dad            bo             
 deep           sau            
 delete         loai bo        
 develope       phat trien     
@@ -99,4 +100,3 @@ ultimate       dot pha
 union          vung mien      
 vietnam        viet nam       
 world          the gioi       
-dad            bo
