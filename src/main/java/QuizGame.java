@@ -4,25 +4,10 @@ import java.util.ArrayList;
 
 public class QuizGame {
     public static final String MCQ = "src/main/resources/MCQ.txt";
+
     private final ArrayList<Question> questions;
 
-    public static class Question {
-        private final String prompt;
-        private final String answer;
-
-        public Question(String prompt, String answer) {
-            this.prompt = prompt;
-            this.answer = answer;
-        }
-
-        public String getPrompt() {
-            return prompt;
-        }
-
-        public String getAnswer() {
-            return answer;
-        }
-    }
+    public record Question(String prompt, String answer) {}
 
     public QuizGame() {
         questions = new ArrayList<>();
@@ -32,10 +17,9 @@ public class QuizGame {
         return questions;
     }
 
-    public ArrayList<Question> readQuestionfromFile() {
+    public void readquestionsfromFile() {
         try (FileReader fr = new FileReader(MCQ);
              BufferedReader br = new BufferedReader(fr)) {
-            ArrayList<Question> questions = new ArrayList<>();
             String line;
             while ((line = br.readLine()) != null) {
                 int idx = line.lastIndexOf("\t");
@@ -43,11 +27,9 @@ public class QuizGame {
                         line.substring(0, idx).replace('\t', '\n'), line.substring(idx + 1));
                 questions.add(question);
             }
-            return questions;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return questions;
     }
 
     public int getSize() {
