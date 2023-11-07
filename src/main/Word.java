@@ -1,4 +1,3 @@
-package base;
 public class Word {
     private String word_target;
     private String word_explain;
@@ -37,5 +36,10 @@ public class Word {
 
     public String getWord_explain() {
         return this.word_explain;
+    }
+
+    @Override
+    public String toString() {
+        return getWord_target();
     }
 }

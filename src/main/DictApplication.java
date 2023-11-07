@@ -1,3 +1,4 @@
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -6,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import atlantafx.base.theme.*;
-
 
 import java.io.IOException;
 
@@ -17,6 +17,7 @@ public class DictApplication extends Application {
     @Override
     public void start(Stage stage) {
         try {
+
             Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
             Scene scene = new Scene(root);
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());

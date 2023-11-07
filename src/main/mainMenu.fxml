@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -50,7 +51,7 @@
             <Font name="Roboto Mono Regular" size="12.0" />
          </font>
       </TextField>
-      <Button alignment="CENTER" graphicTextGap="10.0" layoutX="337.0" layoutY="105.0" mnemonicParsing="false" text="Thêm từ" textFill="#ebebec">
+      <Button fx:id="addWordButton" alignment="CENTER" graphicTextGap="10.0" layoutX="337.0" layoutY="105.0" mnemonicParsing="false" onAction="#addWord" text="Thêm từ" textFill="#ebebec">
          <font>
             <Font name="Roboto Mono Regular" size="18.0" />
          </font>
@@ -110,8 +111,10 @@
             </ImageView>
          </graphic>
       </Button>
-      <TextArea layoutX="26.0" layoutY="159.0" prefHeight="446.0" prefWidth="248.0" />
-      <TextArea editable="false" layoutX="307.0" layoutY="160.0" prefHeight="446.0" prefWidth="907.0" />
+      <TextArea fx:id="textArea" editable="false" layoutX="307.0" layoutY="160.0" prefHeight="446.0" prefWidth="907.0" wrapText="true">
+         <font>
+            <Font name="Roboto Mono Regular" size="36.0" />
+         </font></TextArea>
       <Button fx:id="settingButton" contentDisplay="GRAPHIC_ONLY" layoutX="26.0" layoutY="614.0" mnemonicParsing="false" onAction="#switchToSetting" prefHeight="40.0" prefWidth="40.0" text="Button">
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0">
@@ -121,5 +124,6 @@
             </ImageView>
          </graphic>
       </Button>
+      <ListView fx:id="wordList" layoutX="26.0" layoutY="160.0" prefHeight="446.0" prefWidth="248.0" />
    </children>
 </AnchorPane>

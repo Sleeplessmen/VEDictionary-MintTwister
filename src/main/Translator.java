@@ -4,8 +4,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-package base;
-
 public class Translator {
 
     public static void main(String[] args) throws IOException {
