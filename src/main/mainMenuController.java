@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -27,6 +28,7 @@ import java.util.ResourceBundle;
 
 public class mainMenuController implements Initializable {
     protected static Dictionary dictionary = new Dictionary();
+    protected static boolean isDarkMode = true;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -50,6 +52,9 @@ public class mainMenuController implements Initializable {
     @FXML
     private TextArea textArea;
 
+    @FXML
+    private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
+
 
     public ObservableList<Word> insertFromFile() {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
@@ -59,6 +64,7 @@ public class mainMenuController implements Initializable {
 
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\VEDictionary-MintTwister\\src\\resources\\anhviet109K.txt"))) {
             String line;
+            Word currentWord = null; // Initialize currentWord as null
 
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
@@ -74,6 +80,9 @@ public class mainMenuController implements Initializable {
                     } else {
                         wordPronunciation = "";
                     }
+
+                    // Create a new Word object
+                    currentWord = new Word(wordTarget, "", wordPronunciation);
                 } else if (line.startsWith("*")) {
                     // Extract the word explanation
                     String lineContents = line.substring(1).trim();
@@ -89,18 +98,26 @@ public class mainMenuController implements Initializable {
                     } else {
                         wordExplain = lineContents;
                     }
+
+                    // Append the explanation to the currentWord
+                    if (currentWord != null) {
+                        currentWord.appendExplanation(wordExplain);
+                    }
                 } else if (line.startsWith("-")) {
                     // Append the word meaning to the word explanation
                     wordExplain += " " + line.substring(1).trim();
                 } else if (!line.isEmpty()) {
                     // Add the word to the wordList
-                    Word word = new Word(wordTarget, wordExplain, wordPronunciation);
-                    wordList.add(word);
+                    if (currentWord != null) {
+                        currentWord.setWord_explain(wordExplain);
+                        wordList.add(currentWord);
+                    }
 
                     // Reset variables for the next word
                     wordTarget = "";
                     wordExplain = "";
                     wordPronunciation = "";
+                    currentWord = null;
                 }
             }
         } catch (IOException e) {
@@ -150,6 +167,7 @@ public class mainMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setIcons(isDarkMode);
         ObservableList<Word> wordsFromFile = insertFromFile();
         wordList.setItems(wordsFromFile);
 
@@ -177,6 +195,24 @@ public class mainMenuController implements Initializable {
         });
 
     }
+
+    private void setIcons(boolean isDarkMode) {
+        if (isDarkMode) {
+            addIcon = new ImageView(new Image("/addIcon.png"));
+            deleteIcon = new ImageView(new Image("/deleteIcon.png"));
+            editIcon = new ImageView(new Image("/editIcon.png"));
+            ggIcon = new ImageView(new Image("/ggTransIcon.png"));
+            settingIcon = new ImageView(new Image("/settingIcon.png"));
+
+        } else {
+            addIcon = new ImageView(new Image("/darkAddIcon.png"));
+            deleteIcon = new ImageView(new Image("/darkDeleteIcon.png"));
+            editIcon = new ImageView(new Image("/darkEditIcon.png"));
+            ggIcon = new ImageView(new Image("/darkGGTransIcon.png"));
+            settingIcon = new ImageView(new Image("/darkSettingIcon.png"));
+        }
+    }
+
     @FXML
     void addWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();

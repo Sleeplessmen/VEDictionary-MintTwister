@@ -1,7 +1,5 @@
 
-import atlantafx.base.theme.Dracula;
-import atlantafx.base.theme.NordDark;
-import atlantafx.base.theme.PrimerDark;
+import atlantafx.base.theme.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,13 +25,8 @@ public class settingController {
     private Button backButton;
 
     @FXML
-    private RadioButton themeDracula;
-
-    @FXML
-    private RadioButton themeNordDark;
-
-    @FXML
-    private RadioButton themePrimierDark;
+    private RadioButton themeDracula, themeNordDark,themePrimierDark, themeCupertinoDark,
+            themeNordLight,themePrimierLight, themeCupertinoLight;
 
     public void switchToMainMenu(ActionEvent event) throws IOException {
         root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -52,6 +45,21 @@ public class settingController {
         }
         else if(themePrimierDark.isSelected()) {
             Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        }
+        else if(themeCupertinoDark.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
+        }
+        else if(themeNordLight.isSelected()) {
+            Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+            mainMenuController.isDarkMode = false;
+        }
+        else if(themePrimierLight.isSelected()) {
+            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+            mainMenuController.isDarkMode = false;
+        }
+        else if(themeCupertinoLight.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
+            mainMenuController.isDarkMode = false;
         }
     }
 }

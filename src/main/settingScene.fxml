@@ -19,7 +19,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <RadioButton fx:id="themeNordDark" layoutX="315.0" layoutY="147.0" mnemonicParsing="false" onAction="#getTheme" text="Nord">
+                        <RadioButton fx:id="themeNordDark" layoutX="313.0" layoutY="212.0" mnemonicParsing="false" onAction="#getTheme" text="Nord">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
@@ -27,12 +27,12 @@
                               <ToggleGroup fx:id="Themes" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="themePrimierDark" layoutX="315.0" layoutY="347.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                        <RadioButton fx:id="themePrimierDark" layoutX="313.0" layoutY="383.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
                         </RadioButton>
-                        <RadioButton fx:id="themeDracula" layoutX="315.0" layoutY="247.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
+                        <RadioButton fx:id="themeDracula" layoutX="313.0" layoutY="461.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
@@ -42,6 +42,36 @@
                               <Font name="Roboto Mono Regular" size="48.0" />
                            </font>
                         </Label>
+                        <RadioButton fx:id="themeCupertinoDark" layoutX="313.0" layoutY="299.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <Label layoutX="313.0" layoutY="120.0" text="Dark">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="36.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="716.0" layoutY="120.0" text="Light">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="36.0" />
+                           </font>
+                        </Label>
+                        <RadioButton fx:id="themeNordLight" layoutX="716.0" layoutY="214.0" mnemonicParsing="false" onAction="#getTheme" text="Nord" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themePrimierLight" layoutX="716.0" layoutY="385.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeCupertinoLight" layoutX="716.0" layoutY="301.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
                      </children>
                   </AnchorPane>
             </content>

@@ -1,7 +1,6 @@
 public class Word {
     private String word_target;
     private String word_explain;
-
     private String word_pronunciation;
     public Word() {}
 
@@ -42,4 +41,13 @@ public class Word {
     public String toString() {
         return getWord_target();
     }
+
+    public void appendExplanation(String additionalExplanation) {
+        if (word_explain == null) {
+            word_explain = additionalExplanation;
+        } else {
+            word_explain += " " + additionalExplanation;
+        }
+    }
+
 }
