@@ -37,29 +37,27 @@ public class settingController {
     }
     @FXML
     void getTheme(ActionEvent event) {
-        if(themeDracula.isSelected()) {
+        if (themeDracula.isSelected()) {
             Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
-        }
-        else if(themeNordDark.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themeNordDark.isSelected()) {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-        }
-        else if(themePrimierDark.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themePrimierDark.isSelected()) {
             Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
-        }
-        else if(themeCupertinoDark.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themeCupertinoDark.isSelected()) {
             Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
-        }
-        else if(themeNordLight.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themeNordLight.isSelected()) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
-            mainMenuController.isDarkMode = false;
-        }
-        else if(themePrimierLight.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themePrimierLight.isSelected()) {
             Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
-            mainMenuController.isDarkMode = false;
-        }
-        else if(themeCupertinoLight.isSelected()) {
+            DictApplication.setDarkMode(true);
+        } else if (themeCupertinoLight.isSelected()) {
             Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
-            mainMenuController.isDarkMode = false;
+            DictApplication.setDarkMode(true);
         }
     }
 }

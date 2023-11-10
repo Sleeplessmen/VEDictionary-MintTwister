@@ -1,3 +1,5 @@
+import com.sun.javafx.tk.TKStage;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,12 +25,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class mainMenuController implements Initializable {
     protected static Dictionary dictionary = new Dictionary();
-    protected static boolean isDarkMode = true;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -51,6 +54,8 @@ public class mainMenuController implements Initializable {
     private ListView<Word> wordList;
     @FXML
     private TextArea textArea;
+    @FXML
+    private TextField searchField;
 
     @FXML
     private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
@@ -157,6 +162,26 @@ public class mainMenuController implements Initializable {
         }
 
     }
+    private ObservableList<Word> filterWords(String searchText) {
+        if (searchText == null || searchText.trim().isEmpty()) {
+            // If the search text is empty, return the full list
+            return FXCollections.observableArrayList(Dictionary.listWord);
+        }
+
+        String searchLowerCase = searchText.toLowerCase();
+
+        List<Word> filteredWords = Dictionary.listWord.stream()
+                .filter(word ->
+                        word.getWord_target().toLowerCase().contains(searchLowerCase) ||
+                                word.getWord_explain().toLowerCase().contains(searchLowerCase) ||
+                                word.getWord_pronunciation().toLowerCase().contains(searchLowerCase))
+                .collect(Collectors.toList());
+        if (filteredWords.isEmpty()) {
+            return FXCollections.observableArrayList();
+        }
+        return FXCollections.observableArrayList(filteredWords);
+    }
+
     public void switchToSetting(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("settingScene.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -167,7 +192,7 @@ public class mainMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setIcons(isDarkMode);
+        setIcons(DictApplication.isDarkMode());
         ObservableList<Word> wordsFromFile = insertFromFile();
         wordList.setItems(wordsFromFile);
 
@@ -193,7 +218,10 @@ public class mainMenuController implements Initializable {
                 textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
             }
         });
-
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            ObservableList<Word> filteredWords = filterWords(newValue);
+            wordList.setItems(filteredWords);
+        });
     }
 
     private void setIcons(boolean isDarkMode) {
@@ -253,8 +281,10 @@ public class mainMenuController implements Initializable {
             Word newWord = new Word(wordText, pronunciation, explanation);
             Dictionary.listWord.add(newWord);
 
-            // You may also update your display or save the dictionary to a file
-            // Update your UI or data structures accordingly
+            wordTargetField.textProperty().bindBidirectional(newWord.wordTargetProperty());
+            pronunciationField.textProperty().bindBidirectional(newWord.wordPronunciationProperty());
+            explanationField.textProperty().bindBidirectional(newWord.wordExplainProperty());
+
         });
     }
 }

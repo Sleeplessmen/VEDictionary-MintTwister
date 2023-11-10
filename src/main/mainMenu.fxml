@@ -46,7 +46,7 @@
             <Font name="Roboto Mono Regular" size="24.0" />
          </font>
       </Label>
-      <TextField layoutX="26.0" layoutY="108.0" prefHeight="33.0" prefWidth="248.0" promptText="Nhập từ bạn muốn tìm ở đây....">
+      <TextField fx:id="searchField" layoutX="26.0" layoutY="108.0" prefHeight="33.0" prefWidth="248.0" promptText="Nhập từ bạn muốn tìm ở đây....">
          <font>
             <Font name="Roboto Mono Regular" size="12.0" />
          </font>

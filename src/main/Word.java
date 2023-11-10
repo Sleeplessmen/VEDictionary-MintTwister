@@ -1,7 +1,15 @@
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Word {
     private String word_target;
     private String word_explain;
     private String word_pronunciation;
+
+    private final StringProperty wordTarget = new SimpleStringProperty();
+    private final StringProperty wordPronunciation = new SimpleStringProperty();
+    private final StringProperty wordExplain = new SimpleStringProperty();
+
     public Word() {}
 
     public Word(String wt, String we, String pr) {
@@ -50,4 +58,15 @@ public class Word {
         }
     }
 
+    public StringProperty wordTargetProperty() {
+        return wordTarget;
+    }
+
+    public StringProperty wordPronunciationProperty() {
+        return wordPronunciation;
+    }
+
+    public StringProperty wordExplainProperty() {
+        return wordExplain;
+    }
 }

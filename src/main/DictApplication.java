@@ -11,6 +11,15 @@ import atlantafx.base.theme.*;
 import java.io.IOException;
 
 public class DictApplication extends Application {
+    protected static boolean isDarkMode = true;
+
+    public static boolean isDarkMode() {
+        return isDarkMode;
+    }
+
+    public static void setDarkMode(boolean darkMode) {
+        isDarkMode = darkMode;
+    }
     public static void main(String[] args) {
         launch(args);
     }
