@@ -44,15 +44,11 @@ public class mainMenuController implements Initializable {
     @FXML
     private AnchorPane scenePane;
     @FXML
-    private MenuItem exportFile;
-    @FXML
-    private Button settingButton;
-    @FXML
-    private MenuItem importFile;
+    private MenuItem importFile, exportFile;
     @FXML
     private ImageView bgImage;
     @FXML
-    private Button addWordButton;
+    private Button addWordButton, deleteWordButton, settingButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
@@ -123,13 +119,8 @@ public class mainMenuController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return wordList;
     }
-
-
-
-
 
     @FXML
     void exportToFile(ActionEvent event) {
@@ -169,7 +160,6 @@ public class mainMenuController implements Initializable {
     @FXML
     void searchDictionary() {
         String searchKeyword = searchField.getText().toLowerCase();
-
         filteredWords.setPredicate(word ->
                 word.getWord_target().toLowerCase().startsWith(searchKeyword));
     }
@@ -259,5 +249,79 @@ public class mainMenuController implements Initializable {
         });
     }
 
+    @FXML
+    void deleteWord(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Delete Word");
+        dialog.setHeaderText("Enter Word");
+
+        TextField wordTargetField = new TextField();
+        wordTargetField.setPromptText("Word");
+        wordTargetField.setPrefWidth(200);
+
+        GridPane grid = new GridPane();
+        grid.add(new Label("Word:"), 0, 0);
+        grid.add(wordTargetField, 1, 0);
+        dialog.getDialogPane().setContent(grid);
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(word -> {
+            String wordText = wordTargetField.getText();
+            boolean wordFound = false;
+            for (Word w : allWords) {
+                System.out.println(w.getWord_target());
+                if (wordText.equalsIgnoreCase(w.getWord_target())) {
+                    wordFound = true;
+                    Dictionary.listWord.remove(w);
+                    allWords.remove(w);
+                    break;
+                }
+            }
+            if (!wordFound) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Word doesn't exist");
+                errorAlert.showAndWait();
+            }
+        });
+    }
+
+    @FXML
+    void editWord(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Edit Word");
+        dialog.setHeaderText("Enter Word Information");
+
+        TextField wordTargetField = new TextField();
+        wordTargetField.setPromptText("Word");
+        wordTargetField.setPrefWidth(200);
+
+        TextField pronunciationField = new TextField();
+        pronunciationField.setPromptText("New Pronunciation");
+
+        TextArea explanationField = new TextArea();
+        explanationField.setPromptText("New Explanation");
+
+        GridPane grid = new GridPane();
+        grid.add(new Label("Word:"), 0, 0);
+        grid.add(wordTargetField, 1, 0);
+        grid.add(new Label("Pronunciation:"), 0, 1);
+        grid.add(pronunciationField, 1, 1);
+        grid.add(new Label("Explanation:"), 0, 2);
+        grid.add(explanationField, 1, 2);
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(word -> {
+            String wordText = wordTargetField.getText();
+            String pronunciation = pronunciationField.getText();
+            String explanation = explanationField.getText();
+
+            Word newWord = new Word(wordText, explanation, pronunciation);
+            Dictionary.listWord.add(newWord);
+            allWords.add(newWord);
+        });
+    }
 }
 
