@@ -60,10 +60,6 @@ public class mainMenuController implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private Button searchButton;
-
-
-    @FXML
     private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
 
 
@@ -222,6 +218,10 @@ public class mainMenuController implements Initializable {
                 // Update the TextArea with pronunciation and explanation
                 textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
             }
+        });
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Call the searchDictionary method whenever the text changes
+            searchDictionary();
         });
     }
 
