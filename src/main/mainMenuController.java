@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +33,8 @@ import java.util.stream.Collectors;
 
 public class mainMenuController implements Initializable {
     protected static Dictionary dictionary = new Dictionary();
+    private ObservableList<Word> allWords;
+    private FilteredList<Word> filteredWords;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -56,6 +59,9 @@ public class mainMenuController implements Initializable {
     private TextArea textArea;
     @FXML
     private TextField searchField;
+    @FXML
+    private Button searchButton;
+
 
     @FXML
     private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
@@ -162,25 +168,6 @@ public class mainMenuController implements Initializable {
         }
 
     }
-    private ObservableList<Word> filterWords(String searchText) {
-        if (searchText == null || searchText.trim().isEmpty()) {
-            // If the search text is empty, return the full list
-            return FXCollections.observableArrayList(Dictionary.listWord);
-        }
-
-        String searchLowerCase = searchText.toLowerCase();
-
-        List<Word> filteredWords = Dictionary.listWord.stream()
-                .filter(word ->
-                        word.getWord_target().toLowerCase().contains(searchLowerCase) ||
-                                word.getWord_explain().toLowerCase().contains(searchLowerCase) ||
-                                word.getWord_pronunciation().toLowerCase().contains(searchLowerCase))
-                .collect(Collectors.toList());
-        if (filteredWords.isEmpty()) {
-            return FXCollections.observableArrayList();
-        }
-        return FXCollections.observableArrayList(filteredWords);
-    }
 
     public void switchToSetting(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("settingScene.fxml"));
@@ -189,14 +176,32 @@ public class mainMenuController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    @FXML
+    void searchDictionary() {
+        // Get the search keyword from the TextField
+        String searchKeyword = searchField.getText().toLowerCase();
+
+        // Update the predicate of the filtered list
+        filteredWords.setPredicate(word ->
+                word.getWord_target().toLowerCase().startsWith(searchKeyword));
+
+        // Print the matching words (for debugging)
+        filteredWords.forEach(word -> System.out.println(word.getWord_target()));
+
+        // Check if the filtered list is empty
+        if (filteredWords.isEmpty()) {
+            System.out.println("empty!");
+        } else {
+            System.out.println("not empty!");
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setIcons(DictApplication.isDarkMode());
-        ObservableList<Word> wordsFromFile = insertFromFile();
-        wordList.setItems(wordsFromFile);
-
-        // Set a custom cell factory to display only the word target
+        allWords = insertFromFile();
+        filteredWords = new FilteredList<>(allWords);
+        wordList.setItems(filteredWords);
         wordList.setCellFactory(param -> new ListCell<Word>() {
             @Override
             protected void updateItem(Word item, boolean empty) {
@@ -217,10 +222,6 @@ public class mainMenuController implements Initializable {
                 // Update the TextArea with pronunciation and explanation
                 textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
             }
-        });
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            ObservableList<Word> filteredWords = filterWords(newValue);
-            wordList.setItems(filteredWords);
         });
     }
 
