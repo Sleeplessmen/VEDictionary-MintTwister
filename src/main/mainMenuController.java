@@ -71,34 +71,30 @@ public class mainMenuController implements Initializable {
 
         try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\VEDictionary-MintTwister\\src\\resources\\anhviet109K.txt"))) {
             String line;
-            Word currentWord = null; // Initialize currentWord as null
+            Word currentWord = null;
 
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.startsWith("@")) {
-                    // Extract the word target
                     wordTarget = line.substring(1).trim();
 
-                    // Extract the pronunciation if present
                     String[] parts = wordTarget.split("/");
                     if (parts.length > 1) {
                         wordTarget = parts[0].trim();
-                        wordPronunciation = parts[1].trim();
+                        wordPronunciation = "/" + parts[1].trim() + "/"; // Keep the "/word/" format
                     } else {
                         wordPronunciation = "";
                     }
 
-                    // Create a new Word object
                     currentWord = new Word(wordTarget, "", wordPronunciation);
                 } else if (line.startsWith("*")) {
-                    // Extract the word explanation
                     String lineContents = line.substring(1).trim();
                     int pronunciationStart = lineContents.indexOf('/');
                     if (pronunciationStart != -1) {
                         int pronunciationEnd = lineContents.lastIndexOf('/');
                         if (pronunciationEnd > pronunciationStart) {
                             wordExplain = lineContents.substring(0, pronunciationStart).trim();
-                            wordPronunciation = lineContents.substring(pronunciationStart + 1, pronunciationEnd).trim();
+                            wordPronunciation = "/" + lineContents.substring(pronunciationStart + 1, pronunciationEnd).trim() + "/"; // Keep the "/word/" format
                         } else {
                             wordExplain = lineContents;
                         }
@@ -106,12 +102,10 @@ public class mainMenuController implements Initializable {
                         wordExplain = lineContents;
                     }
 
-                    // Append the explanation to the currentWord
                     if (currentWord != null) {
                         currentWord.appendExplanation(wordExplain);
                     }
                 } else if (line.startsWith("-")) {
-                    // Append the word meaning to the word explanation
                     wordExplain += " " + line.substring(1).trim();
                 } else if (!line.isEmpty()) {
                     // Add the word to the wordList
@@ -120,7 +114,6 @@ public class mainMenuController implements Initializable {
                         wordList.add(currentWord);
                     }
 
-                    // Reset variables for the next word
                     wordTarget = "";
                     wordExplain = "";
                     wordPronunciation = "";
@@ -133,6 +126,7 @@ public class mainMenuController implements Initializable {
 
         return wordList;
     }
+
 
 
 
@@ -174,22 +168,10 @@ public class mainMenuController implements Initializable {
     }
     @FXML
     void searchDictionary() {
-        // Get the search keyword from the TextField
         String searchKeyword = searchField.getText().toLowerCase();
 
-        // Update the predicate of the filtered list
         filteredWords.setPredicate(word ->
                 word.getWord_target().toLowerCase().startsWith(searchKeyword));
-
-        // Print the matching words (for debugging)
-        filteredWords.forEach(word -> System.out.println(word.getWord_target()));
-
-        // Check if the filtered list is empty
-        if (filteredWords.isEmpty()) {
-            System.out.println("empty!");
-        } else {
-            System.out.println("not empty!");
-        }
     }
 
     @Override
@@ -211,16 +193,13 @@ public class mainMenuController implements Initializable {
         });
         wordList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, selectedWord) -> {
             if (selectedWord != null) {
-                // Retrieve the pronunciation and explanation of the selected word
                 String pronunciation = selectedWord.getWord_pronunciation();
                 String explanation = selectedWord.getWord_explain();
 
-                // Update the TextArea with pronunciation and explanation
                 textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
             }
         });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Call the searchDictionary method whenever the text changes
             searchDictionary();
         });
     }
@@ -248,10 +227,9 @@ public class mainMenuController implements Initializable {
         dialog.setTitle("Add Word");
         dialog.setHeaderText("Enter Word Information");
 
-        // Create input fields for word target, pronunciation, and explanation
         TextField wordTargetField = new TextField();
         wordTargetField.setPromptText("Word");
-        wordTargetField.setPrefWidth(200); // Set the preferred width
+        wordTargetField.setPrefWidth(200);
 
         TextField pronunciationField = new TextField();
         pronunciationField.setPromptText("Pronunciation");
@@ -268,25 +246,18 @@ public class mainMenuController implements Initializable {
         grid.add(explanationField, 1, 2);
         dialog.getDialogPane().setContent(grid);
 
-        // Show the dialog and wait for the user's response
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(word -> {
-            // Handle the input here
             String wordText = wordTargetField.getText();
             String pronunciation = pronunciationField.getText();
             String explanation = explanationField.getText();
 
-            // Add the word to your dictionary using your own logic
-            // You can create a Word object and add it to your dictionary
-            Word newWord = new Word(wordText, pronunciation, explanation);
+            Word newWord = new Word(wordText, explanation, pronunciation);
             Dictionary.listWord.add(newWord);
-
-            wordTargetField.textProperty().bindBidirectional(newWord.wordTargetProperty());
-            pronunciationField.textProperty().bindBidirectional(newWord.wordPronunciationProperty());
-            explanationField.textProperty().bindBidirectional(newWord.wordExplainProperty());
-
+            allWords.add(newWord);
         });
     }
+
 }
 
