@@ -75,7 +75,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="692.0" layoutY="105.0" mnemonicParsing="false" text="Chỉnh sửa từ">
+      <Button fx:id="editWordButton" layoutX="692.0" layoutY="105.0" mnemonicParsing="false" onAction="#editWord" text="Chỉnh sửa từ">
          <font>
             <Font name="Roboto Mono Regular" size="18.0" />
          </font>

@@ -48,7 +48,7 @@ public class mainMenuController implements Initializable {
     @FXML
     private ImageView bgImage;
     @FXML
-    private Button addWordButton, deleteWordButton, settingButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
@@ -317,10 +317,38 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             String pronunciation = pronunciationField.getText();
             String explanation = explanationField.getText();
-
-            Word newWord = new Word(wordText, explanation, pronunciation);
-            Dictionary.listWord.add(newWord);
-            allWords.add(newWord);
+            boolean wordFound = false;
+            for (Word w : allWords) {
+                System.out.println(w.getWord_target());
+                if (wordText.equalsIgnoreCase(w.getWord_target())) {
+                    if (pronunciation.isEmpty() && explanation.isEmpty()) {
+                        wordFound = true;
+                        break;
+                    }
+                    else if (!pronunciation.isEmpty() && explanation.isEmpty()) {
+                        wordFound = true;
+                        w.setWord_pronounciation(pronunciation);
+                        break;
+                    }
+                    else if (pronunciation.isEmpty() && !explanation.isEmpty()) {
+                        wordFound = true;
+                        w.setWord_explain(explanation);
+                        break;
+                    }
+                    else {
+                        wordFound = true;
+                        w.setWord_explain(explanation);
+                        w.setWord_pronounciation(pronunciation);
+                        break;
+                    }
+                }
+            }
+            if (!wordFound) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText("Word doesn't exist");
+                errorAlert.showAndWait();
+            }
         });
     }
 }
