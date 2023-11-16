@@ -1,15 +1,15 @@
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import atlantafx.base.theme.*;
 
 import java.io.IOException;
-
+import base.*;
 public class DictApplication extends Application {
     protected static boolean isDarkMode = true;
 
@@ -23,8 +23,10 @@ public class DictApplication extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     @Override
     public void start(Stage stage) {
+
         try {
 
             Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -43,6 +45,7 @@ public class DictApplication extends Application {
                 logout(stage);
             });
         } catch(Exception e) {
+            System.err.println("loi ne");
         e.printStackTrace();
         }
     }

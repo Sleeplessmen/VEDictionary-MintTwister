@@ -27,13 +27,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-
+import base.*;
 public class mainMenuController implements Initializable {
+    private Parent settingParent;
     protected static Dictionary dictionary = new Dictionary();
-    private ObservableList<Word> allWords;
+    private ObservableList<Word> allWords = insertFromFile();
     private FilteredList<Word> filteredWords;
     @FXML
     private Stage stage;
@@ -48,7 +50,7 @@ public class mainMenuController implements Initializable {
     @FXML
     private ImageView bgImage;
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
@@ -58,6 +60,42 @@ public class mainMenuController implements Initializable {
     @FXML
     private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settingScene.fxml"));
+            settingParent = fxmlLoader.load();
+            settingController = fxmlLoader.getController();
+        } catch (IOException e) {
+            System.err.println("loi roi em");
+            throw new RuntimeException(e);
+        }
+        setIcons(DictApplication.isDarkMode());
+        filteredWords = new FilteredList<>(allWords);
+        wordList.setItems(filteredWords);
+        wordList.setCellFactory(param -> new ListCell<Word>() {
+            @Override
+            protected void updateItem(Word item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item.getWordTarget());
+                }
+            }
+        });
+        wordList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, selectedWord) -> {
+            if (selectedWord != null) {
+                String pronunciation = selectedWord.getWordPronunciation();
+                String explanation = selectedWord.getWordExplain();
+
+                textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
+            }
+        });
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            searchDictionary();
+        });
+    }
 
     public ObservableList<Word> insertFromFile() {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
@@ -106,7 +144,7 @@ public class mainMenuController implements Initializable {
                 } else if (!line.isEmpty()) {
                     // Add the word to the wordList
                     if (currentWord != null) {
-                        currentWord.setWord_explain(wordExplain);
+                        currentWord.setWordExplain(wordExplain);
                         wordList.add(currentWord);
                     }
 
@@ -151,9 +189,8 @@ public class mainMenuController implements Initializable {
     }
 
     public void switchToSetting(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("settingScene.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        scene = new Scene(settingParent);
         stage.setScene(scene);
         stage.show();
     }
@@ -161,39 +198,8 @@ public class mainMenuController implements Initializable {
     void searchDictionary() {
         String searchKeyword = searchField.getText().toLowerCase();
         filteredWords.setPredicate(word ->
-                word.getWord_target().toLowerCase().startsWith(searchKeyword));
+                word.getWordTarget().toLowerCase().startsWith(searchKeyword));
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setIcons(DictApplication.isDarkMode());
-        allWords = insertFromFile();
-        filteredWords = new FilteredList<>(allWords);
-        wordList.setItems(filteredWords);
-        wordList.setCellFactory(param -> new ListCell<Word>() {
-            @Override
-            protected void updateItem(Word item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getWord_target());
-                }
-            }
-        });
-        wordList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, selectedWord) -> {
-            if (selectedWord != null) {
-                String pronunciation = selectedWord.getWord_pronunciation();
-                String explanation = selectedWord.getWord_explain();
-
-                textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
-            }
-        });
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchDictionary();
-        });
-    }
-
     private void setIcons(boolean isDarkMode) {
         if (isDarkMode) {
             addIcon = new ImageView(new Image("/addIcon.png"));
@@ -209,6 +215,12 @@ public class mainMenuController implements Initializable {
             ggIcon = new ImageView(new Image("/darkGGTransIcon.png"));
             settingIcon = new ImageView(new Image("/darkSettingIcon.png"));
         }
+    }
+
+    @FXML
+    void launchHangMan(ActionEvent event) throws Exception {
+        HangmanApp hangmanGame = new HangmanApp();
+        hangmanGame.start(new Stage());
     }
 
     @FXML
@@ -269,8 +281,8 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             boolean wordFound = false;
             for (Word w : allWords) {
-                System.out.println(w.getWord_target());
-                if (wordText.equalsIgnoreCase(w.getWord_target())) {
+                System.out.println(w.getWordTarget());
+                if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     wordFound = true;
                     Dictionary.listWord.remove(w);
                     allWords.remove(w);
@@ -319,26 +331,26 @@ public class mainMenuController implements Initializable {
             String explanation = explanationField.getText();
             boolean wordFound = false;
             for (Word w : allWords) {
-                System.out.println(w.getWord_target());
-                if (wordText.equalsIgnoreCase(w.getWord_target())) {
+                System.out.println(w.getWordTarget());
+                if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     if (pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
                         break;
                     }
                     else if (!pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
-                        w.setWord_pronounciation(pronunciation);
+                        w.setWordPronunciation(pronunciation);
                         break;
                     }
                     else if (pronunciation.isEmpty() && !explanation.isEmpty()) {
                         wordFound = true;
-                        w.setWord_explain(explanation);
+                        w.setWordExplain(explanation);
                         break;
                     }
                     else {
                         wordFound = true;
-                        w.setWord_explain(explanation);
-                        w.setWord_pronounciation(pronunciation);
+                        w.setWordExplain(explanation);
+                        w.setWordPronunciation(pronunciation);
                         break;
                     }
                 }
