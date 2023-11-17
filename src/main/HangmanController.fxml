@@ -38,5 +38,6 @@
             <Image url="@../resources/hangman0.png" />
          </image>
       </ImageView>
+      <Button fx:id="newGameButton" layoutX="36.0" layoutY="28.0" mnemonicParsing="false" onAction="#resetGame" text="New Game" />
    </children>
 </AnchorPane>

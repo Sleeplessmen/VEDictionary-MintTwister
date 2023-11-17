@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,9 +36,9 @@ import base.*;
 public class mainMenuController implements Initializable {
     private Parent settingParent;
     protected static Dictionary dictionary = new Dictionary();
-    protected ObservableList<Word> allWords = insertFromFile();
+    protected DBDictionary dbDictionary;
+    protected ObservableList<Word> allWords = FXCollections.observableArrayList();
     private FilteredList<Word> filteredWords;
-    protected List<Word> hangmanWords = allWords;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -58,10 +59,16 @@ public class mainMenuController implements Initializable {
     private TextField searchField;
     @FXML
     private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon,gameIcon;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setIcons(DictApplication.isDarkMode());
+        dbDictionary = new DBDictionary();
+        try {
+            dbDictionary.initialize();
+            allWords = dbDictionary.getAllWordsFromDB();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         filteredWords = new FilteredList<>(allWords);
         wordList.setItems(filteredWords);
         wordList.setCellFactory(param -> new ListCell<Word>() {
@@ -87,7 +94,9 @@ public class mainMenuController implements Initializable {
             searchDictionary();
         });
     }
-
+    public void setDBDictionary(DBDictionary dbDictionary) {
+        this.dbDictionary = dbDictionary;
+    }
     public ObservableList<Word> insertFromFile() {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
         String wordTarget = "";
@@ -218,13 +227,10 @@ public class mainMenuController implements Initializable {
     void launchHangMan(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
         Parent root = loader.load();
-
         HangmanApp hangmanController = loader.getController();
-        hangmanController.setWordList(hangmanWords);
-
         Stage newStage = new Stage();
         newStage.setWidth(600);
-        newStage.setHeight(400);
+        newStage.setHeight(450);
         Scene scene = new Scene(root);
         newStage.setScene(scene);
         newStage.setTitle("Hangman Game");
@@ -372,5 +378,13 @@ public class mainMenuController implements Initializable {
             }
         });
     }
+
+    public void stop() {
+        // Close the database connection
+        if (dbDictionary != null) {
+            dbDictionary.closeConnection();
+        }
+    }
+
 }
 

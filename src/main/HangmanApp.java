@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,13 +15,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import base.*;
 
 public class HangmanApp extends Application implements Initializable {
+    protected static DBDictionary dict = new DBDictionary();
     private String secretWord = "HANGMAN";
     private StringBuilder currentWordState;
     private int incorrectGuesses = 0;
@@ -35,7 +39,7 @@ public class HangmanApp extends Application implements Initializable {
     private ImageView hangmanImage;
 
     @FXML
-    private Button hintButton;
+    private Button hintButton, newGameButton;
 
     @FXML
     private Label incorrectCharacters;
@@ -44,11 +48,12 @@ public class HangmanApp extends Application implements Initializable {
     private TextField textField;
     @FXML
     private Label messageLabel;
-
+    protected ObservableList<Word> allWords = FXCollections.observableArrayList();
     private List<Word> wordList;
 
     public void setWordList(List<Word> wordList) {
         this.wordList = wordList;
+        initialize(null, null);
     }
 
     @FXML
@@ -63,29 +68,33 @@ public class HangmanApp extends Application implements Initializable {
             char guessedLetter = guess.charAt(0);
             boolean correctGuess = false;
 
-            for (int i = 0; i < secretWord.length(); i++) {
-                if (secretWord.charAt(i) == guessedLetter) {
-                    currentWordState.setCharAt(i, guessedLetter);
-                    correctGuess = true;
+            if (currentWordState != null) {  // Add this check
+                for (int i = 0; i < secretWord.length(); i++) {
+                    if (secretWord.charAt(i) == guessedLetter) {
+                        currentWordState.setCharAt(i, guessedLetter);
+                        correctGuess = true;
+                    }
                 }
-            }
 
-            if (!correctGuess) {
-                incorrectGuesses++;
-                updateHangmanImage();
-                incorrectCharacters.setText(incorrectCharacters.getText() + " " + guess.charAt(0));
-            }
+                if (!correctGuess) {
+                    incorrectGuesses++;
+                    updateHangmanImage();
+                    incorrectCharacters.setText(incorrectCharacters.getText() + " " + guess.charAt(0));
+                }
 
-            updateUI(currentStateOfWord, messageLabel);
+                updateUI(currentStateOfWord, messageLabel);
 
-            if (currentWordState.toString().equals(secretWord)) {
-                messageLabel.setText("Congratulations!");
-                messageLabel.setDisable(true);
-                textField.setEditable(false);
-            } else if (incorrectGuesses == MAX_INCORRECT_GUESSES) {
-                messageLabel.setText("The answer is: " + secretWord);
-                messageLabel.setDisable(true);
-                textField.setEditable(false);
+                if (currentWordState.toString().equals(secretWord)) {
+                    messageLabel.setText("Congratulations!");
+                    messageLabel.setDisable(true);
+                    textField.setEditable(false);
+                } else if (incorrectGuesses == MAX_INCORRECT_GUESSES) {
+                    messageLabel.setText("The answer is: " + secretWord);
+                    messageLabel.setDisable(true);
+                    textField.setEditable(false);
+                }
+            } else {
+                System.out.println("Error: currentWordState is not initialized.");
             }
         } else {
             messageLabel.setText("Invalid guess. Please enter a single letter.");
@@ -93,8 +102,22 @@ public class HangmanApp extends Application implements Initializable {
         textField.clear();
     }
 
+    public void resetGame() {
+        incorrectGuesses = 0;
+        updateHangmanImage();
+        incorrectCharacters.setText("");
+        textField.setEditable(true);
+        messageLabel.setText("");
+        initialize(null, null);
+        updateUI(currentStateOfWord, messageLabel);
+    }
     @Override
     public void start(Stage primaryStage) throws Exception {
+        try {
+            dict.initialize();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         Parent root = FXMLLoader.load(getClass().getResource("HangmanController.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Hangman Game");
@@ -108,6 +131,8 @@ public class HangmanApp extends Application implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        allWords = dict.getAllWordsFromDB();
+        wordList = allWords.stream().collect(Collectors.toList());
         if (wordList != null && !wordList.isEmpty()) {
             int randomIndex = new Random().nextInt(wordList.size());
             Word randomWord = wordList.get(randomIndex);
@@ -118,6 +143,8 @@ public class HangmanApp extends Application implements Initializable {
             for (int i = 0; i < secretWord.length(); i++) {
                 currentWordState.append("_");
             }
+
+            updateUI(currentStateOfWord, messageLabel);  // Add this line to update the UI after initialization
         } else {
             System.out.println("Error: Word list is empty or not provided.");
         }
@@ -131,6 +158,6 @@ public class HangmanApp extends Application implements Initializable {
     private void updateUI(Label currentStateOfWord, Label guessesLeft) {
         currentStateOfWord.setText(currentWordState.toString());
         guessesLeft.setText("Guesses left: " + (MAX_INCORRECT_GUESSES - incorrectGuesses));
-
     }
+
 }
