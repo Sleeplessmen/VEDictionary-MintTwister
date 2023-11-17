@@ -11,7 +11,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 
-public class Scene3Controller implements Initializable{
+public class Scene3Controller implements Initializable {
 
     @FXML
     private WebView webView;

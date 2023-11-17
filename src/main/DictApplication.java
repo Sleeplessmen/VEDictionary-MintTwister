@@ -1,14 +1,10 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.*;
 import atlantafx.base.theme.*;
-
-
-import java.io.IOException;
 
 public class DictApplication extends Application {
     public static void main(String[] args) {
