@@ -1,5 +1,7 @@
 package base;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,24 +11,25 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class DBDictionary {
-    private static final String URL =
+    private static final String DATABASE_URL =
             "jdbc:mysql://localhost:3306/mintwister";
+    private static final String USERNAME = "mintwister";
+    private static final String PASSWORD = "mintwister";
+    private static final String EXPORTTOFILEPATH = "src/main/resources/DBDExportFile.txt";
     private static Connection con = null;
 
-    private void connectToDb() {
-        System.out.println("Connecting to database ...");
+    private void connect() {
+        System.out.println("Connecting database ...");
         try {
-            con = DriverManager.getConnection(URL, "mintwister", "");
+            con = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            System.out.println("Database is connected successfully!");
+            throw new IllegalStateException("Cannot connect the database!", e);
         }
     }
 
-    public void initialize() throws SQLException {
+    public void initialize() {
         // connect to db
-        connectToDb();
+        connect();
         // get all the word target
         ArrayList<String> allWordTarget = new ArrayList<>();
         final String query = "select * from dictionary";
@@ -53,10 +56,14 @@ public class DBDictionary {
         }
     }
 
-    private static void close(Connection con) {
+    /**
+     * Reference:<a href=" https://coderanch.com/t/300886/databases/Proper-close-Connection-Statement-ResultSe">...</a>t
+     */
+    public static void close(Connection connection) {
         try {
-            if (con != null) {
-                con.close();
+            if (connection != null) {
+                connection.close();
+                System.out.println("Database disconnected!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -202,7 +209,22 @@ public class DBDictionary {
         return new ArrayList<>();
     }
 
+    public void exportToFileTxt() {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(EXPORTTOFILEPATH), StandardCharsets.UTF_8))) {
+            ArrayList<Word> listWord = getAllWords();
+            StringBuilder res = new StringBuilder();
+            for (Word word : listWord) {
+                res.append(word.getWordTarget()).append("\t").
+                        append(word.getWordExplain()).append("\n");
+            }
+            bufferedWriter.write(res.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String []args) {
-
+        DBDictionary dbDictionary = new DBDictionary();
+        dbDictionary.initialize();
+        dbDictionary.exportToFileTxt();
     }
 }
