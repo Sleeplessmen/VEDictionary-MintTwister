@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class DBDictionary {
     private static final String URL =
-            "jdbc:mysql://localhost:3306/mintwister";
+            "jdbc:mysql://localhost:3306/dict2";
     private static Connection con = null;
 
     private void connectToDb() {
         System.out.println("Connecting to database ...");
         try {
-            con = DriverManager.getConnection(URL, "mintwister", "");
+            con = DriverManager.getConnection(URL, "root", "hoang1234");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -84,7 +84,7 @@ public class DBDictionary {
     }
 
     public String lookupWord(String wordTarget) {
-        String query = "select wordExplain from dictionary where wordTarget = ?";
+        String query = "select Explanation from dictionary where Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
@@ -93,7 +93,7 @@ public class DBDictionary {
                 try {
                     // check if rs contains any rows
                     if (rs.next()) {
-                        return rs.getString("wordExplain");
+                        return rs.getString("Explanation");
                     } else {
                         return "N/A";
                     }
@@ -110,7 +110,7 @@ public class DBDictionary {
     }
 
     public boolean insertWord(String wordTarget, String wordExplain) {
-        String query = "insert into dictionary(wordTarget, wordExplain) values (?, ?)";
+        String query = "insert into dictionary(Word, Explanation) values (?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
@@ -132,7 +132,7 @@ public class DBDictionary {
     }
 
     public boolean removeWord(String wordTarget) {
-        String query = "delete from dictionary where wordTarget = ?";
+        String query = "delete from dictionary where Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
@@ -152,7 +152,7 @@ public class DBDictionary {
     }
 
     public boolean modifyWord(String wordTarget, String newWordExplain) {
-        String query = "update dictionary set wordExplain = ? where wordTarget = ?";
+        String query = "update dictionary set Explanation = ? where Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, newWordExplain);
@@ -202,7 +202,13 @@ public class DBDictionary {
         return new ArrayList<>();
     }
 
-    public static void main(String []args) {
-
+    public static void main(String []args) throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        DBDictionary dict = new DBDictionary();
+        dict.initialize();
+        dict.insertWord("cunny", "uohhhhhh");
+        String wordTarget = "example";
+        String wordExplain = dict.lookupWord(wordTarget);
+        System.out.println("Explanation for '" + wordTarget + "': " + wordExplain);
     }
 }

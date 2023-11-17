@@ -12,13 +12,9 @@ import java.io.IOException;
 import base.*;
 public class DictApplication extends Application {
     protected static boolean isDarkMode = true;
-
+    private DBDictionary dbDictionary;
     public static boolean isDarkMode() {
         return isDarkMode;
-    }
-
-    public static void setDarkMode(boolean darkMode) {
-        isDarkMode = darkMode;
     }
     public static void main(String[] args) {
         launch(args);
@@ -26,12 +22,14 @@ public class DictApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-
+        dbDictionary = new DBDictionary();
         try {
-
-            Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+            dbDictionary.initialize();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+            mainMenuController mainMenuController = loader.getController();
             Image icon = new Image("icon.jpg");
             stage.getIcons().add(icon);
             stage.setTitle("chit fumo");

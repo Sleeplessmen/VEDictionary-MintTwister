@@ -35,20 +35,19 @@ import base.*;
 public class mainMenuController implements Initializable {
     private Parent settingParent;
     protected static Dictionary dictionary = new Dictionary();
-    private ObservableList<Word> allWords = insertFromFile();
+    protected ObservableList<Word> allWords = insertFromFile();
     private FilteredList<Word> filteredWords;
+    protected List<Word> hangmanWords = allWords;
     @FXML
     private Stage stage;
     private Scene scene;
     private Parent root;
     @FXML
-    private settingController settingController;
-    @FXML
     private AnchorPane scenePane;
     @FXML
     private MenuItem importFile, exportFile;
     @FXML
-    private ImageView bgImage;
+    protected static ImageView bgImage = new ImageView();
     @FXML
     private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton;
     @FXML
@@ -58,18 +57,10 @@ public class mainMenuController implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon;
+    private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon,gameIcon;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("settingScene.fxml"));
-            settingParent = fxmlLoader.load();
-            settingController = fxmlLoader.getController();
-        } catch (IOException e) {
-            System.err.println("loi roi em");
-            throw new RuntimeException(e);
-        }
         setIcons(DictApplication.isDarkMode());
         filteredWords = new FilteredList<>(allWords);
         wordList.setItems(filteredWords);
@@ -189,10 +180,16 @@ public class mainMenuController implements Initializable {
     }
 
     public void switchToSetting(ActionEvent event) throws IOException {
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(settingParent);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("settingScene.fxml"));
+        Parent root = loader.load();
+        settingController settingController = loader.getController();
+        settingController.setParentController(this);
+        Stage settingStage = new Stage();
+        settingStage.setTitle("Settings");
+        settingStage.setWidth(800);
+        settingStage.setHeight(600);
+        settingStage.setScene(new Scene(root));
+        settingStage.show();
     }
     @FXML
     void searchDictionary() {
@@ -219,8 +216,20 @@ public class mainMenuController implements Initializable {
 
     @FXML
     void launchHangMan(ActionEvent event) throws Exception {
-        HangmanApp hangmanGame = new HangmanApp();
-        hangmanGame.start(new Stage());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
+        Parent root = loader.load();
+
+        HangmanApp hangmanController = loader.getController();
+        hangmanController.setWordList(hangmanWords);
+
+        Stage newStage = new Stage();
+        newStage.setWidth(600);
+        newStage.setHeight(400);
+        Scene scene = new Scene(root);
+        newStage.setScene(scene);
+        newStage.setTitle("Hangman Game");
+        newStage.show();
+
     }
 
     @FXML

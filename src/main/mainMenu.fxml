@@ -99,7 +99,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="gameButton" layoutX="1120.0" layoutY="624.0" mnemonicParsing="false" onAction="#launchHangMan" text="Game" textFill="#ebebec">
+      <Button fx:id="gameButton" layoutX="1120.0" layoutY="624.0" mnemonicParsing="false" onAction="#launchHangMan" text="Game">
          <font>
             <Font name="Roboto Mono Regular" size="18.0" />
          </font>

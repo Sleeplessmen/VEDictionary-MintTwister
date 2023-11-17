@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -13,7 +14,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
+
+import base.*;
 
 public class HangmanApp extends Application implements Initializable {
     private String secretWord = "HANGMAN";
@@ -39,6 +44,12 @@ public class HangmanApp extends Application implements Initializable {
     private TextField textField;
     @FXML
     private Label messageLabel;
+
+    private List<Word> wordList;
+
+    public void setWordList(List<Word> wordList) {
+        this.wordList = wordList;
+    }
 
     @FXML
     void giveHint(ActionEvent event) {
@@ -97,9 +108,18 @@ public class HangmanApp extends Application implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        currentWordState = new StringBuilder();
-        for (int i = 0; i < secretWord.length(); i++) {
-            currentWordState.append("_");
+        if (wordList != null && !wordList.isEmpty()) {
+            int randomIndex = new Random().nextInt(wordList.size());
+            Word randomWord = wordList.get(randomIndex);
+
+            secretWord = randomWord.getWordTarget().toUpperCase();
+
+            currentWordState = new StringBuilder();
+            for (int i = 0; i < secretWord.length(); i++) {
+                currentWordState.append("_");
+            }
+        } else {
+            System.out.println("Error: Word list is empty or not provided.");
         }
     }
     private void updateHangmanImage() {
