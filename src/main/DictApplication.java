@@ -12,7 +12,8 @@ import java.io.IOException;
 import base.*;
 public class DictApplication extends Application {
     protected static boolean isDarkMode = true;
-    private DBDictionary dbDictionary;
+    protected TextToSpeech TTS = new TextToSpeech();
+    public static DBDictionary dbDictionary;
     public static boolean isDarkMode() {
         return isDarkMode;
     }

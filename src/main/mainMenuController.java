@@ -26,6 +26,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
@@ -35,10 +38,9 @@ import java.util.stream.Collectors;
 import base.*;
 public class mainMenuController implements Initializable {
     private Parent settingParent;
-    protected static Dictionary dictionary = new Dictionary();
-    protected DBDictionary dbDictionary;
     protected ObservableList<Word> allWords = FXCollections.observableArrayList();
     private FilteredList<Word> filteredWords;
+    private String currentlySelectedWord;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -50,7 +52,7 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
@@ -58,17 +60,11 @@ public class mainMenuController implements Initializable {
     @FXML
     private TextField searchField;
     @FXML
-    private ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon,gameIcon;
+    public static ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon,gameIcon;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setIcons(DictApplication.isDarkMode());
-        dbDictionary = new DBDictionary();
-        try {
-            dbDictionary.initialize();
-            allWords = dbDictionary.getAllWordsFromDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        allWords = DictApplication.dbDictionary.getAllWordsFromDB();
         filteredWords = new FilteredList<>(allWords);
         wordList.setItems(filteredWords);
         wordList.setCellFactory(param -> new ListCell<Word>() {
@@ -86,16 +82,13 @@ public class mainMenuController implements Initializable {
             if (selectedWord != null) {
                 String pronunciation = selectedWord.getWordPronunciation();
                 String explanation = selectedWord.getWordExplain();
-
+                currentlySelectedWord = selectedWord.getWordTarget();
                 textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
             }
         });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchDictionary();
         });
-    }
-    public void setDBDictionary(DBDictionary dbDictionary) {
-        this.dbDictionary = dbDictionary;
     }
     public ObservableList<Word> insertFromFile() {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
@@ -174,6 +167,12 @@ public class mainMenuController implements Initializable {
     public mainMenuController() {
     }
 
+    @FXML
+    void readAloud(ActionEvent event) throws Exception {
+        TextToSpeech.generate(currentlySelectedWord);
+        TextToSpeech.playWav("voice.wav");
+    }
+
     public void logout(ActionEvent e) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exiting...");
@@ -231,6 +230,7 @@ public class mainMenuController implements Initializable {
         Stage newStage = new Stage();
         newStage.setWidth(600);
         newStage.setHeight(450);
+        newStage.setResizable(false);
         Scene scene = new Scene(root);
         newStage.setScene(scene);
         newStage.setTitle("Hangman Game");
@@ -296,7 +296,6 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             boolean wordFound = false;
             for (Word w : allWords) {
-                System.out.println(w.getWordTarget());
                 if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     wordFound = true;
                     Dictionary.listWord.remove(w);
@@ -346,7 +345,6 @@ public class mainMenuController implements Initializable {
             String explanation = explanationField.getText();
             boolean wordFound = false;
             for (Word w : allWords) {
-                System.out.println(w.getWordTarget());
                 if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     if (pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
@@ -378,13 +376,5 @@ public class mainMenuController implements Initializable {
             }
         });
     }
-
-    public void stop() {
-        // Close the database connection
-        if (dbDictionary != null) {
-            dbDictionary.closeConnection();
-        }
-    }
-
 }
 

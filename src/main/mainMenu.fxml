@@ -125,5 +125,14 @@
          </graphic>
       </Button>
       <ListView fx:id="wordList" layoutX="26.0" layoutY="160.0" prefHeight="446.0" prefWidth="248.0" />
+      <Button fx:id="ttsButton" contentDisplay="GRAPHIC_ONLY" layoutX="1120.0" layoutY="530.0" mnemonicParsing="false" onAction="#readAloud" text="Button">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@/ttsIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

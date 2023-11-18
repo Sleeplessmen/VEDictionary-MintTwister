@@ -25,7 +25,6 @@ public class settingController implements Initializable {
     @FXML
     private RadioButton themeDracula, themeNordDark,themePrimierDark, themeCupertinoDark,
             themeNordLight,themePrimierLight, themeCupertinoLight;
-
     private mainMenuController controller;
     public void setParentController(mainMenuController controller) {
         this.controller = controller;

@@ -1,24 +1,20 @@
+package base;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
 public class Translator {
 
-    public static void main(String[] args) throws IOException {
-        String text = "Hello world!";
-        //Translated text: Hallo Welt!
-        System.out.println("Translated text: " + translate("en", "vn", text));
-    }
-
-    private static String translate(String langFrom, String langTo, String text) throws IOException {
-        // INSERT YOU URL HERE
-        String urlStr = "https://script.google.com/macros/s/AKfycbyO1vJXSAg94oORX72a8tMA9Os0uSz4BmZPQwaIk9C6/dev" +
+    public static String googleTranslate(String langFrom, String langTo, String text) throws IOException {
+        String urlScript = "https://script.google.com/macros/s/AKfycbw1qSfs1Hvfnoi3FzGuoDWijwQW69eGcMM_iGDF7p5vu1oN_CaFqIDFmCGzBuuGCk_N/exec" +
                 "?q=" + URLEncoder.encode(text, "UTF-8") +
                 "&target=" + langTo +
                 "&source=" + langFrom;
-        URL url = new URL(urlStr);
+        URL url = new URL(urlScript);
         StringBuilder response = new StringBuilder();
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -29,6 +25,11 @@ public class Translator {
         }
         in.close();
         return response.toString();
+    }
+
+    public static void main(String[] args) throws IOException {
+        String text = "handsome";
+        System.out.println("Translated text: \n" + googleTranslate("", "vi", text));
     }
 
 }

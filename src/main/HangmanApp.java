@@ -24,13 +24,13 @@ import java.util.stream.Collectors;
 import base.*;
 
 public class HangmanApp extends Application implements Initializable {
-    protected static DBDictionary dict = new DBDictionary();
-    private String secretWord = "HANGMAN";
+    private String secretWord;
+    private Word currentWord;
     private StringBuilder currentWordState;
     private int incorrectGuesses = 0;
     private static final int MAX_INCORRECT_GUESSES = 6;
     @FXML
-    private Label currentStateOfWord;
+    private Label currentStateOfWord, hintText;
 
     @FXML
     private Button guessButton;
@@ -58,13 +58,14 @@ public class HangmanApp extends Application implements Initializable {
 
     @FXML
     void giveHint(ActionEvent event) {
-
+        String hint = currentWord.getWordExplain();
+        hintText.setText(hint);
     }
 
     @FXML
     void handleGuess(ActionEvent event) {
         String guess = textField.getText().toUpperCase();
-        if (guess.length() == 1 && Character.isLetter(guess.charAt(0))) {
+        if (guess.length() == 1) {
             char guessedLetter = guess.charAt(0);
             boolean correctGuess = false;
 
@@ -113,11 +114,6 @@ public class HangmanApp extends Application implements Initializable {
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try {
-            dict.initialize();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         Parent root = FXMLLoader.load(getClass().getResource("HangmanController.fxml"));
         Scene scene = new Scene(root);
         primaryStage.setTitle("Hangman Game");
@@ -131,12 +127,12 @@ public class HangmanApp extends Application implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        allWords = dict.getAllWordsFromDB();
+        allWords = DictApplication.dbDictionary.getAllWordsFromDB();
         wordList = allWords.stream().collect(Collectors.toList());
         if (wordList != null && !wordList.isEmpty()) {
             int randomIndex = new Random().nextInt(wordList.size());
             Word randomWord = wordList.get(randomIndex);
-
+            currentWord = randomWord;
             secretWord = randomWord.getWordTarget().toUpperCase();
 
             currentWordState = new StringBuilder();
