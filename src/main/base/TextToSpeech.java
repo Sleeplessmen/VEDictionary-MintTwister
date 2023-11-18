@@ -1,18 +1,16 @@
 package base;
 
 import java.io.*;
-import com.voicerss.tts.AudioCodec;
+
+import com.voicerss.tts.*;
 import com.voicerss.tts.AudioFormat;
-import com.voicerss.tts.Languages;
-import com.voicerss.tts.SpeechDataEvent;
-import com.voicerss.tts.SpeechDataEventListener;
-import com.voicerss.tts.SpeechErrorEvent;
-import com.voicerss.tts.SpeechErrorEventListener;
-import com.voicerss.tts.VoiceParameters;
-import com.voicerss.tts.VoiceProvider;
+
 import javax.sound.sampled.*;
 public class TextToSpeech {
-
+    protected static String selectedVoice = Languages.English_UnitedStates;
+    public static void setVoice(String voice) {
+        selectedVoice = voice;
+    }
     public static void playWav(String filePath) {
         try {
             File audioFile = new File(filePath);
@@ -38,11 +36,9 @@ public class TextToSpeech {
             e.printStackTrace();
         }
     }
-
     public static void generate(String text) throws Exception {
-
         VoiceProvider tts = new VoiceProvider("fe623bc3a3fc42a1aec2fd5c1124e635");
-        VoiceParameters params = new VoiceParameters(text, Languages.English_UnitedStates);
+        VoiceParameters params = new VoiceParameters(text, selectedVoice);
         params.setCodec(AudioCodec.WAV);
         params.setFormat(AudioFormat.Format_44KHZ.AF_44khz_16bit_stereo);
         params.setBase64(false);
@@ -57,7 +53,7 @@ public class TextToSpeech {
         fos.close();
     }
     public static void main(String args[]) throws Exception {
-        generate("nigger");
+        generate("test");
         playWav("voice.wav");
     }
 }
