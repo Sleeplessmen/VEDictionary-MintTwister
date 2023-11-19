@@ -359,7 +359,6 @@ public class mainMenuController implements Initializable {
             }
         });
     }
-
     @FXML
     void translate(ActionEvent event) throws IOException {
         String textToTranslate = ggSearchField.getText();
