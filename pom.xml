@@ -13,17 +13,34 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 <junit.version>5.9.2</junit.version>  </properties>
 
+    <repositories>
+        <repository>
+            <id>clojars.org</id>
+            <url>https://repo.clojars.org</url>
+        </repository>
+    </repositories>
+
   <dependencies>
     <dependency>
       <groupId>com.google.cloud</groupId>
       <artifactId>google-cloud-translate</artifactId>
       <version>1.9.0</version>
     </dependency>
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-jersey</artifactId>
+          <version>3.1.5</version>
+      </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>21-ea+24</version>
     </dependency>
+      <dependency>
+          <groupId>org.asynchttpclient</groupId>
+          <artifactId>async-http-client</artifactId>
+          <version>3.0.0.Beta3</version>
+      </dependency>
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
@@ -67,6 +84,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>8.2.0</version> <!-- Use the version you downloaded -->
     </dependency>
+
+    <dependency>
+      <groupId>net.clojars.suuft</groupId>
+      <artifactId>libretranslate-java</artifactId>
+      <version>1.0.5</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -80,6 +103,10 @@
           <target>20</target>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+        </plugin>
       <plugin>
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
