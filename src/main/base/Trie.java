@@ -14,6 +14,9 @@ public class Trie {
     }
 
     public static void addWord(String wordTarget) {
+        if (wordTarget == null) {
+            return;
+        }
         TrieNode current = root;
         for (int i = 0; i < wordTarget.length(); i++) {
             char temp = wordTarget.charAt(i);

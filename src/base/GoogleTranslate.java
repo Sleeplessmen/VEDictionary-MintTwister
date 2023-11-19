@@ -1,3 +1,4 @@
+package base;
 public class GoogleTranslate {
 
     private static final Translate translate = TranslateOptions.getDefaultInstance().getService();

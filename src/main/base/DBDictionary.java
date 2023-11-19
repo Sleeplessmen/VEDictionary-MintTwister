@@ -2,6 +2,9 @@ package base;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,25 +14,27 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class DBDictionary {
-    private static final String DATABASE_URL =
-            "jdbc:mysql://localhost:3306/mintwister";
-    private static final String USERNAME = "mintwister";
-    private static final String PASSWORD = "mintwister";
-    private static final String EXPORTTOFILEPATH = "src/main/resources/DBDExportFile.txt";
     private static Connection con = null;
+    private final String url = "jdbc:mysql://localhost:3306/dict2";
+    private final String username = "root";
+    private final String password = "hoang1234";
 
-    private void connect() {
-        System.out.println("Connecting database ...");
+    public DBDictionary() {
+    }
+    private void connectToDb() {
+        System.out.println("Connecting to database ...");
         try {
-            con = DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
+            con = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
-            throw new IllegalStateException("Cannot connect the database!", e);
+            e.printStackTrace();
+        } finally {
+            System.out.println("Database is connected successfully!");
         }
     }
 
-    public void initialize() {
+    public void initialize() throws SQLException {
         // connect to db
-        connect();
+        connectToDb();
         // get all the word target
         ArrayList<String> allWordTarget = new ArrayList<>();
         final String query = "select * from dictionary";
@@ -56,14 +61,10 @@ public class DBDictionary {
         }
     }
 
-    /**
-     * Reference:<a href=" https://coderanch.com/t/300886/databases/Proper-close-Connection-Statement-ResultSe">...</a>t
-     */
-    public static void close(Connection connection) {
+    private static void close(Connection con) {
         try {
-            if (connection != null) {
-                connection.close();
-                System.out.println("Database disconnected!");
+            if (con != null) {
+                con.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -91,16 +92,17 @@ public class DBDictionary {
     }
 
     public String lookupWord(String wordTarget) {
-        String query = "select wordExplain from dictionary where wordTarget = ?";
+        String query = "SELECT Pronunciation, Explanation FROM dictionary WHERE Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
             try {
                 ResultSet rs = ps.executeQuery();
                 try {
-                    // check if rs contains any rows
                     if (rs.next()) {
-                        return rs.getString("wordExplain");
+                        String pronunciation = rs.getString("Pronunciation");
+                        String explanation = rs.getString("Explanation");
+                        return "Pronunciation: " + pronunciation + "\nExplanation: " + explanation;
                     } else {
                         return "N/A";
                     }
@@ -116,12 +118,13 @@ public class DBDictionary {
         return "N/A";
     }
 
-    public boolean insertWord(String wordTarget, String wordExplain) {
-        String query = "insert into dictionary(wordTarget, wordExplain) values (?, ?)";
+    public boolean insertWord(String wordTarget, String pronunciation, String explanation) {
+        String query = "INSERT INTO dictionary(Word, Pronunciation, Explanation) VALUES (?, ?, ?)";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
-            ps.setString(2, wordExplain);
+            ps.setString(2, pronunciation);
+            ps.setString(3, explanation);
             try {
                 ps.executeUpdate();
             } catch (SQLIntegrityConstraintViolationException e) {
@@ -139,7 +142,7 @@ public class DBDictionary {
     }
 
     public boolean removeWord(String wordTarget) {
-        String query = "delete from dictionary where wordTarget = ?";
+        String query = "delete from dictionary where Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             ps.setString(1, wordTarget);
@@ -158,12 +161,13 @@ public class DBDictionary {
         return false;
     }
 
-    public boolean modifyWord(String wordTarget, String newWordExplain) {
-        String query = "update dictionary set wordExplain = ? where wordTarget = ?";
+    public boolean modifyWord(String wordTarget, String newPronunciation, String newExplanation) {
+        String query = "UPDATE dictionary SET Pronunciation = ?, Explanation = ? WHERE Word = ?";
         try {
             PreparedStatement ps = con.prepareStatement(query);
-            ps.setString(1, newWordExplain);
-            ps.setString(2, wordTarget);
+            ps.setString(1, newPronunciation);
+            ps.setString(2, newExplanation);
+            ps.setString(3, wordTarget);
             try {
                 if (ps.executeUpdate() == 0) {
                     return false;
@@ -181,13 +185,20 @@ public class DBDictionary {
     }*/
 
 
-    private ArrayList<Word> getWordsFromResultSet (PreparedStatement ps) throws SQLException {
+    private ArrayList<Word> getWordsFromResultSet(PreparedStatement ps) throws SQLException {
         try {
             ResultSet rs = ps.executeQuery();
             try {
                 ArrayList<Word> words = new ArrayList<>();
                 while (rs.next()) {
-                    words.add(new Word(rs.getString(2), rs.getString(3)));
+                    String wordTarget = rs.getString("Word");
+                    String pronunciation = rs.getString("Pronunciation");
+                    String explanation = rs.getString("Explanation");
+
+                    // Skip records with no wordTarget
+                    if (wordTarget != null && !wordTarget.isEmpty()) {
+                        words.add(new Word(wordTarget, explanation, pronunciation ));
+                    }
                 }
                 return words;
             } finally {
@@ -199,7 +210,7 @@ public class DBDictionary {
     }
 
     public ArrayList<Word> getAllWords() {
-        final String query = "select * from dictionary";
+        final String query = "SELECT * FROM dictionary";
         try {
             PreparedStatement ps = con.prepareStatement(query);
             return getWordsFromResultSet(ps);
@@ -209,22 +220,46 @@ public class DBDictionary {
         return new ArrayList<>();
     }
 
-    public void exportToFileTxt() {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(EXPORTTOFILEPATH), StandardCharsets.UTF_8))) {
-            ArrayList<Word> listWord = getAllWords();
-            StringBuilder res = new StringBuilder();
-            for (Word word : listWord) {
-                res.append(word.getWordTarget()).append("\t").
-                        append(word.getWordExplain()).append("\n");
+    public ArrayList<Word> getAllWordsFromDb() {
+        final String query = "SELECT * FROM dictionary";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            return getWordsFromResultSet(ps);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
+    public ObservableList<Word> getAllWordsFromDB() {
+        final String query = "select Word, Pronunciation, Explanation from dictionary";
+        try {
+            PreparedStatement ps = con.prepareStatement(query);
+            return FXCollections.observableArrayList(getWordsFromResultSet(ps));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return FXCollections.observableArrayList(); // Return an empty list in case of an error
+    }
+
+    public void closeConnection() {
+        try {
+            if (con != null && !con.isClosed()) {
+                con.close();
+                System.out.println("Database connection closed.");
             }
-            bufferedWriter.write(res.toString());
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void main(String []args) {
-        DBDictionary dbDictionary = new DBDictionary();
-        dbDictionary.initialize();
-        dbDictionary.exportToFileTxt();
+
+    public static void main(String []args) throws SQLException, ClassNotFoundException {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        DBDictionary dict = new DBDictionary();
+        dict.initialize();
+        dict.insertWord("osu!", "/os/", "game bam vong");
+        String wordTarget = "osu!";
+        String wordExplain = dict.lookupWord(wordTarget);
+        System.out.println("Explanation for '" + wordTarget + "': " + wordExplain);
     }
 }

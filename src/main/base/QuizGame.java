@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class QuizGame {
-    public static final String MCQ = "src/main/resources/MCQ.txt";
+    public static final String MCQ = "src/resources//MCQ.txt";
 
     private final ArrayList<Question> questions;
 

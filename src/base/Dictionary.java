@@ -1,4 +1,4 @@
-package src.base;
+package base;
 import java.util.ArrayList;
 
 public class Dictionary {

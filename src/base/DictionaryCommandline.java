@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+package base;
+
 public class DictionaryCommandline {
     DictionaryManagement myDictionaryMng = new DictionaryManagement();
 

@@ -1,0 +1,102 @@
+dad	bo
+parent	bo me noi chung
+book	sach
+film	phim
+chicken	thit ga
+bedroom	phong ngu
+hotel	khach san
+game	tro choi
+game	giai tri
+game	chuong trinh truyen hinh
+game	dien tu
+ball	bong
+sex	gioi tinh
+house	nha
+hello	xin chao
+low	thap
+high	cao
+chief	dau bep
+illustrate	lam sang to
+illegal	trai luat
+instruction	huong dan
+comment	binh luan
+company	cong ty
+math	toan
+literal	van
+english	tieng anh
+morning	sang
+afternoon	chieu
+evening	toi
+special	dac biet
+eliminate	loai bo
+delete	loai bo
+insert	chen, them vao
+chinese	trung quoc
+vietnam	viet nam
+lunch	trua
+health	suc khoe
+lost	mat
+laugh	cuoi
+project	du an
+quantity	so luong
+translate	phien dich
+transport	phuong tien giao thong
+transform	chuyen doi
+hell	dia nguc
+head	dau
+fill	lam day
+double	gap doi
+full	day
+push	day
+file	tai lieu
+document	tai lieu
+police	canh sat
+guard	ve si
+bag	tui
+bay	vinh
+clock	dong ho
+city	thanh pho
+country	dat nuoc
+province	tinh
+provide	cung cap
+product	san xuat
+production	san pham
+professor	giao su
+profession	su chuyen nghiep
+profile	ho so
+process	qua trinh
+probably	co le
+property	cau hinh
+proof	bang chung
+pronoun	phat am
+prohibit	cam
+problem	van de
+soul	tam hon
+scan	truy tim
+union	vung mien
+ultimate	dot pha
+girl	co gai
+boy	chang trai
+beat	nhip dieu
+world	the gioi
+laptop	may tinh xach tay
+source	nguon
+garden	san
+tea	tra
+elephant	voi
+estimate	xap xi
+expect	ky vong
+develope	phat trien
+deep	sau
+lamp	den
+sing	hat
+shout	gao thet
+gun	sung
+allow	cho phep
+all	tat ca
+ant	kien
+author	tac gia
+ancestor	to tien
+array	day, hang
+application	ung dung
+cow	bo

@@ -1,20 +1,20 @@
 
-import atlantafx.base.theme.Dracula;
-import atlantafx.base.theme.NordDark;
-import atlantafx.base.theme.PrimerDark;
+import atlantafx.base.theme.*;
+import base.TextToSpeech;
+import com.voicerss.tts.Languages;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
-public class settingController {
+import java.net.URL;
+import java.util.ResourceBundle;
+public class settingController implements Initializable {
     @FXML
     private Stage stage;
     private Scene scene;
@@ -24,34 +24,51 @@ public class settingController {
     private ToggleGroup Themes;
 
     @FXML
-    private Button backButton;
+    private RadioButton themeDracula, themeNordDark,themePrimierDark, themeCupertinoDark,
+            themeNordLight,themePrimierLight, themeCupertinoLight;
 
     @FXML
-    private RadioButton themeDracula;
-
+    private RadioButton voiceENUS, voiceENUK, voiceENAUS, voiceENCA,voiceENIN,voiceENIRL;
+    private mainMenuController controller;
+    public void setParentController(mainMenuController controller) {
+        this.controller = controller;
+    }
     @FXML
-    private RadioButton themeNordDark;
-
-    @FXML
-    private RadioButton themePrimierDark;
-
-    public void switchToMainMenu(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    void getVoice(ActionEvent event) {
+        if (voiceENUS.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_UnitedStates);
+        } else if (voiceENUK.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_GreatBritain);
+        } else if (voiceENAUS.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_Australia);
+        } else if (voiceENCA.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_Canada);
+        } else if (voiceENIN.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_India);
+        } else if (voiceENIRL.isSelected()) {
+            TextToSpeech.setVoice(Languages.English_Ireland);
+        }
     }
     @FXML
     void getTheme(ActionEvent event) {
-        if(themeDracula.isSelected()) {
+        if (themeDracula.isSelected()) {
             Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
-        }
-        else if(themeNordDark.isSelected()) {
+        } else if (themeNordDark.isSelected()) {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
-        }
-        else if(themePrimierDark.isSelected()) {
+        } else if (themePrimierDark.isSelected()) {
             Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        } else if (themeCupertinoDark.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
+        } else if (themeNordLight.isSelected()) {
+            Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        } else if (themePrimierLight.isSelected()) {
+            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        } else if (themeCupertinoLight.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
         }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }
