@@ -52,18 +52,17 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
     private TextArea textArea;
     @FXML
-    private TextField searchField;
+    private TextField searchField, ggSearchField;
     @FXML
     public static ImageView addIcon,deleteIcon,editIcon,ggIcon,settingIcon,gameIcon;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setIcons(DictApplication.isDarkMode());
         allWords = DictApplication.dbDictionary.getAllWordsFromDB();
         filteredWords = new FilteredList<>(allWords);
         wordList.setItems(filteredWords);
@@ -196,6 +195,7 @@ public class mainMenuController implements Initializable {
         settingStage.setTitle("Settings");
         settingStage.setWidth(800);
         settingStage.setHeight(600);
+        settingStage.setResizable(false);
         settingStage.setScene(new Scene(root));
         settingStage.show();
     }
@@ -205,23 +205,6 @@ public class mainMenuController implements Initializable {
         filteredWords.setPredicate(word ->
                 word.getWordTarget().toLowerCase().startsWith(searchKeyword));
     }
-    private void setIcons(boolean isDarkMode) {
-        if (isDarkMode) {
-            addIcon = new ImageView(new Image("/addIcon.png"));
-            deleteIcon = new ImageView(new Image("/deleteIcon.png"));
-            editIcon = new ImageView(new Image("/editIcon.png"));
-            ggIcon = new ImageView(new Image("/ggTransIcon.png"));
-            settingIcon = new ImageView(new Image("/settingIcon.png"));
-
-        } else {
-            addIcon = new ImageView(new Image("/darkAddIcon.png"));
-            deleteIcon = new ImageView(new Image("/darkDeleteIcon.png"));
-            editIcon = new ImageView(new Image("/darkEditIcon.png"));
-            ggIcon = new ImageView(new Image("/darkGGTransIcon.png"));
-            settingIcon = new ImageView(new Image("/darkSettingIcon.png"));
-        }
-    }
-
     @FXML
     void launchHangMan(ActionEvent event) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
@@ -375,6 +358,14 @@ public class mainMenuController implements Initializable {
                 errorAlert.showAndWait();
             }
         });
+    }
+
+    @FXML
+    void translate(ActionEvent event) throws IOException {
+        String textToTranslate = ggSearchField.getText();
+        String translatedText = Translator.translate(textToTranslate);
+        currentlySelectedWord = textToTranslate;
+        textArea.setText(translatedText);
     }
 }
 

@@ -1,7 +1,5 @@
 package base;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
