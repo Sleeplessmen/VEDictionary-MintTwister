@@ -209,17 +209,7 @@ public class mainMenuController implements Initializable {
     }
     @FXML
     void launchHangMan(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
-        Parent root = loader.load();
-        HangmanApp hangmanController = loader.getController();
-        Stage newStage = new Stage();
-        newStage.setWidth(600);
-        newStage.setHeight(450);
-        newStage.setResizable(false);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.setTitle("Hangman Game");
-        newStage.show();
+
     }
 
     @FXML
@@ -390,6 +380,60 @@ public class mainMenuController implements Initializable {
             }
         }
         return false;
+    }
+    @FXML
+    private void showGameDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Choose a Game");
+        dialog.setHeaderText("Select a game to play:");
+
+        ButtonType game1Button = new ButtonType("Hangman");
+        ButtonType game2Button = new ButtonType("Quiz Time!");
+
+        dialog.getDialogPane().getButtonTypes().addAll(game1Button, game2Button, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == game1Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                HangmanApp hangmanController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(600);
+                newStage.setHeight(450);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Hangman Game");
+                newStage.show();
+                System.out.println("Launching Hangman");
+            } else if (buttonType == game2Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("QuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                QuizController quizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Quiz Time");
+                newStage.show();
+                System.out.println("Launching Quiz Time");
+            }
+            return null;
+        });
+
+        dialog.showAndWait();
     }
 }
 

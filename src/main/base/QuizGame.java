@@ -42,6 +42,8 @@ public class QuizGame {
         }
     }
 
+
+
     public int getSize() {
         return questions.size();
     }
