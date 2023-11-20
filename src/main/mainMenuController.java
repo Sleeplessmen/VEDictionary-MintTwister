@@ -42,6 +42,8 @@ public class mainMenuController implements Initializable {
     private FilteredList<Word> filteredWords;
     private String currentlySelectedWord;
     @FXML
+    private AnchorPane anchorPane;
+    @FXML
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -52,7 +54,7 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton, addButton;
     @FXML
     private ListView<Word> wordList;
     @FXML
@@ -218,7 +220,6 @@ public class mainMenuController implements Initializable {
         newStage.setScene(scene);
         newStage.setTitle("Hangman Game");
         newStage.show();
-
     }
 
     @FXML
@@ -365,6 +366,30 @@ public class mainMenuController implements Initializable {
         String translatedText = Translator.translate(textToTranslate);
         currentlySelectedWord = textToTranslate;
         textArea.setText(translatedText);
+        addButton = new Button("Add this word/phrase");
+        AnchorPane.setTopAnchor(addButton, 53.0);
+        AnchorPane.setLeftAnchor(addButton, 641.0);
+        // Set up the action event handler for the add button
+        addButton.setOnAction(addEvent -> {
+            if (addButton != null) {
+                anchorPane.getChildren().remove(addButton);
+                addButton = null; // Set the reference to null
+            }
+            if (!check(textToTranslate)) {
+                Word newWord = new Word(textToTranslate, translatedText, null);
+                Dictionary.listWord.add(newWord);
+                allWords.add(newWord);
+            }
+        });
+        anchorPane.getChildren().add(addButton);
+    }
+    public boolean check(String n) {
+        for (Word w : allWords) {
+            if (n.equalsIgnoreCase(w.getWordTarget())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

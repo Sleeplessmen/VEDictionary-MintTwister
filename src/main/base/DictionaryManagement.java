@@ -289,6 +289,10 @@ public class DictionaryManagement extends Dictionary {
         Random random = new Random();
         QuizGame qg = new QuizGame();
         qg.readquestionsfromFile();
+
+        // Set of valid options
+        Set<String> validOptions = Set.of("a", "b", "c", "d");
+
         System.out.println(" ******RANDOM QUIZ GAME****** ");
         System.out.println("  (Multiple-choice question)  ");
         System.out.println("1.Start");
@@ -298,18 +302,25 @@ public class DictionaryManagement extends Dictionary {
         if (query == 2) {
             return;
         }
+
         do {
             idx = random.nextInt(qg.getSize());
             QuizGame.Question currentQuestion = qg.getQuestions().get(idx);
             System.out.println(currentQuestion.prompt());
             System.out.println("Your choice (a, b, c, or d):");
             String userAnswer = scanner.nextLine().toLowerCase();
-            String correctAnswer = currentQuestion.answer().toLowerCase();
 
-            if (userAnswer.equals(correctAnswer)) {
-                System.out.println("Correct answer.");
+            // Check if the userAnswer is a valid option
+            if (validOptions.contains(userAnswer)) {
+                String correctAnswer = currentQuestion.answer().toLowerCase();
+
+                if (userAnswer.equals(correctAnswer)) {
+                    System.out.println("Correct answer.");
+                } else {
+                    System.out.println("Wrong answer. The correct answer is: " + correctAnswer);
+                }
             } else {
-                System.out.println("Wrong answer. The correct answer is: " + correctAnswer);
+                System.out.println("Invalid choice. Please enter a, b, c, or d.");
             }
 
             System.out.print("Continue? Yes(1) No(2):");
