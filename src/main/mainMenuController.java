@@ -109,7 +109,7 @@ public class mainMenuController implements Initializable {
                     String[] parts = wordTarget.split("/");
                     if (parts.length > 1) {
                         wordTarget = parts[0].trim();
-                        wordPronunciation = "/" + parts[1].trim() + "/"; // Keep the "/word/" format
+                        wordPronunciation = "/" + parts[1].trim() + "/";
                     } else {
                         wordPronunciation = "";
                     }
@@ -136,7 +136,6 @@ public class mainMenuController implements Initializable {
                 } else if (line.startsWith("-")) {
                     wordExplain += " " + line.substring(1).trim();
                 } else if (!line.isEmpty()) {
-                    // Add the word to the wordList
                     if (currentWord != null) {
                         currentWord.setWordExplain(wordExplain);
                         wordList.add(currentWord);
@@ -243,10 +242,11 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             String pronunciation = pronunciationField.getText();
             String explanation = explanationField.getText();
-
-            Word newWord = new Word(wordText, explanation, pronunciation);
-            allWords.add(newWord);
-            DictApplication.dbDictionary.insertWord(wordText, pronunciation, explanation);
+            if (DictApplication.dbDictionary.lookupWord(wordText) == "N/A") {
+                Word newWord = new Word(wordText, explanation, pronunciation);
+                allWords.add(newWord);
+                DictApplication.dbDictionary.insertWord(wordText, pronunciation, explanation);
+            }
         });
     }
 
@@ -327,17 +327,20 @@ public class mainMenuController implements Initializable {
                     else if (!pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText,pronunciation,w.getWordExplain());
                         break;
                     }
                     else if (pronunciation.isEmpty() && !explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordExplain(explanation);
+                        DictApplication.dbDictionary.modifyWord(wordText,w.getWordPronunciation(),explanation);
                         break;
                     }
                     else {
                         wordFound = true;
                         w.setWordExplain(explanation);
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText, pronunciation, explanation);
                         break;
                     }
                 }
@@ -359,11 +362,10 @@ public class mainMenuController implements Initializable {
         addButton = new Button("Add this word/phrase");
         AnchorPane.setTopAnchor(addButton, 53.0);
         AnchorPane.setLeftAnchor(addButton, 641.0);
-        // Set up the action event handler for the add button
         addButton.setOnAction(addEvent -> {
             if (addButton != null) {
                 anchorPane.getChildren().remove(addButton);
-                addButton = null; // Set the reference to null
+                addButton = null;
             }
             if (!check(textToTranslate)) {
                 Word newWord = new Word(textToTranslate, translatedText, null);
@@ -389,8 +391,9 @@ public class mainMenuController implements Initializable {
 
         ButtonType game1Button = new ButtonType("Hangman");
         ButtonType game2Button = new ButtonType("Quiz Time!");
+        ButtonType game3Button = new ButtonType("Word Quiz");
 
-        dialog.getDialogPane().getButtonTypes().addAll(game1Button, game2Button, ButtonType.CANCEL);
+        dialog.getDialogPane().getButtonTypes().addAll(game1Button, game2Button, game3Button, ButtonType.CANCEL);
 
         dialog.setResultConverter(buttonType -> {
             if (buttonType == game1Button) {
@@ -429,6 +432,25 @@ public class mainMenuController implements Initializable {
                 newStage.setTitle("Quiz Time");
                 newStage.show();
                 System.out.println("Launching Quiz Time");
+            }
+            else if (buttonType == game3Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("WordQuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                WordQuizController wordQuizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Word Quiz");
+                newStage.show();
+                System.out.println("Launching Word Quiz");
             }
             return null;
         });

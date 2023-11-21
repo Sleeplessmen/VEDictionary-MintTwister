@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -5,29 +6,9 @@ import base.*;
 
 import java.util.*;
 
-public class QuizController {
-    @FXML
-    private Label questionLabel;
-
-    @FXML
-    private Button choiceA;
-
-    @FXML
-    private Button choiceB;
-
-    @FXML
-    private Button choiceC;
-
-    @FXML
-    private Button choiceD;
-    @FXML
-    private Label currentStreak;
-
-    private QuizGame quizGame;
+public class QuizController extends QuizGameTemplate {
     private int currentQuestionIndex;
-
     private int streak = 0;
-
     private Set<Integer> answeredQuestions;
     @FXML
     public void initialize() {
@@ -58,22 +39,10 @@ public class QuizController {
         enableButtons();
     }
 
-    private void enableButtons() {
-        choiceA.setDisable(false);
-        choiceB.setDisable(false);
-        choiceC.setDisable(false);
-        choiceD.setDisable(false);
-    }
 
-    private void disableButtons() {
-        choiceA.setDisable(true);
-        choiceB.setDisable(true);
-        choiceC.setDisable(true);
-        choiceD.setDisable(true);
-    }
 
     @FXML
-    private void handleChoiceClick(javafx.event.ActionEvent event) {
+    public void handleChoiceClick(javafx.event.ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
         String userAnswer = clickedButton.getText();
 
@@ -94,8 +63,8 @@ public class QuizController {
         disableButtons();
     }
 
-    @FXML
-    private void handleContinueClick() {
+    @Override
+    public void handleContinueClick(ActionEvent event) {
         showNextQuestion();
     }
 }

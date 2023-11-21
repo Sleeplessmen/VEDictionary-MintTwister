@@ -9,7 +9,7 @@
    <children>
       <Label fx:id="questionLabel" alignment="TOP_CENTER" layoutX="13.0" layoutY="10.0" prefHeight="263.0" prefWidth="775.0" wrapText="true">
          <font>
-            <Font name="Roboto Mono Regular" size="18.0" />
+            <Font name="Roboto Mono Regular" size="36.0" />
          </font>
       </Label>
       <Button fx:id="choiceA" layoutX="100.0" layoutY="279.0" mnemonicParsing="false" onAction="#handleChoiceClick" prefHeight="75.0" prefWidth="150.0" text="A">
