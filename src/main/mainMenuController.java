@@ -215,7 +215,7 @@ public class mainMenuController implements Initializable {
     @FXML
     void addWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Word");
+        dialog.setTitle("Add Word/Phrase");
         dialog.setHeaderText("Enter Word Information");
 
         TextField wordTargetField = new TextField();
@@ -245,8 +245,8 @@ public class mainMenuController implements Initializable {
             String explanation = explanationField.getText();
 
             Word newWord = new Word(wordText, explanation, pronunciation);
-            Dictionary.listWord.add(newWord);
             allWords.add(newWord);
+            DictApplication.dbDictionary.insertWord(wordText, pronunciation, explanation);
         });
     }
 
@@ -254,7 +254,7 @@ public class mainMenuController implements Initializable {
     void deleteWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Delete Word");
-        dialog.setHeaderText("Enter Word");
+        dialog.setHeaderText("Enter Word/Phrase");
 
         TextField wordTargetField = new TextField();
         wordTargetField.setPromptText("Word");
@@ -272,7 +272,7 @@ public class mainMenuController implements Initializable {
             for (Word w : allWords) {
                 if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     wordFound = true;
-                    Dictionary.listWord.remove(w);
+                    DictApplication.dbDictionary.removeWord(wordText);
                     allWords.remove(w);
                     break;
                 }
@@ -367,7 +367,7 @@ public class mainMenuController implements Initializable {
             }
             if (!check(textToTranslate)) {
                 Word newWord = new Word(textToTranslate, translatedText, null);
-                Dictionary.listWord.add(newWord);
+                DictApplication.dbDictionary.insertWord(textToTranslate, null, translatedText);
                 allWords.add(newWord);
             }
         });

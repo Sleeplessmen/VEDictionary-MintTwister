@@ -7,9 +7,9 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuizController">
    <children>
-      <Label fx:id="questionLabel" alignment="TOP_CENTER" layoutY="33.0" prefHeight="219.0" prefWidth="801.0">
+      <Label fx:id="questionLabel" alignment="TOP_CENTER" layoutX="13.0" layoutY="10.0" prefHeight="263.0" prefWidth="775.0" wrapText="true">
          <font>
-            <Font name="Roboto Mono Regular" size="12.0" />
+            <Font name="Roboto Mono Regular" size="18.0" />
          </font>
       </Label>
       <Button fx:id="choiceA" layoutX="100.0" layoutY="279.0" mnemonicParsing="false" onAction="#handleChoiceClick" prefHeight="75.0" prefWidth="150.0" text="A">
@@ -29,7 +29,7 @@
             <Font name="Roboto Mono Regular" size="48.0" />
          </font></Button>
       <Button layoutX="660.0" layoutY="522.0" mnemonicParsing="false" onAction="#handleContinueClick" text="Continue" />
-      <Label layoutX="58.0" layoutY="524.0" text="Answer Streak: 0">
+      <Label fx:id="currentStreak" layoutX="58.0" layoutY="524.0" text="Answer Streak: 0">
          <font>
             <Font name="Roboto Mono Regular" size="24.0" />
          </font>
