@@ -29,11 +29,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import base.*;
 public class mainMenuController implements Initializable {
@@ -54,9 +54,11 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton, addButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton, addButton, addToFavouriteButton;
     @FXML
     private ListView<Word> wordList;
+    @FXML
+    private CheckBox favouriteCheckBox;
     @FXML
     private TextArea textArea;
     @FXML
@@ -454,8 +456,61 @@ public class mainMenuController implements Initializable {
             }
             return null;
         });
-
         dialog.showAndWait();
     }
+
+    @FXML
+    private void showFavourites(ActionEvent event) {
+        List<Word> words = getWordsFromDatabase(favouriteCheckBox.isSelected());
+        allWords.setAll(words);
+    }
+
+    private List<Word> getWordsFromDatabase(boolean showFavourites) {
+        String query = "SELECT Word, Pronunciation, Explanation FROM dictionary WHERE Favourite = ?";
+
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setInt(1, showFavourites ? 1 : 0);
+            return getWordsFromResultSet(ps);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider logging or handling the exception appropriately
+        }
+
+        return new ArrayList<>();
+    }
+
+    private List<Word> getWordsFromResultSet(PreparedStatement ps) throws SQLException {
+        List<Word> words = new ArrayList<>();
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String word = rs.getString("Word");
+                String pronunciation = rs.getString("Pronunciation");
+                String explanation = rs.getString("Explanation");
+
+                // Assuming you have a Word constructor
+                Word currentWord = new Word(word, explanation, pronunciation);
+                words.add(currentWord);
+            }
+        }
+        return words;
+    }
+
+    @FXML
+    public boolean toggleFavourite(ActionEvent event) {
+        String query = "UPDATE dictionary SET Favourite = CASE WHEN Favourite = 1 THEN 0 ELSE 1 END WHERE Word = ?";
+        String wordTarget = currentlySelectedWord;
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setString(1, wordTarget);
+
+            if (ps.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }
 
