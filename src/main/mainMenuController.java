@@ -29,11 +29,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import base.*;
 public class mainMenuController implements Initializable {
@@ -41,6 +41,8 @@ public class mainMenuController implements Initializable {
     protected ObservableList<Word> allWords = FXCollections.observableArrayList();
     private FilteredList<Word> filteredWords;
     private String currentlySelectedWord;
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -52,9 +54,11 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton, addButton, addToFavouriteButton;
     @FXML
     private ListView<Word> wordList;
+    @FXML
+    private CheckBox favouriteCheckBox;
     @FXML
     private TextArea textArea;
     @FXML
@@ -107,7 +111,7 @@ public class mainMenuController implements Initializable {
                     String[] parts = wordTarget.split("/");
                     if (parts.length > 1) {
                         wordTarget = parts[0].trim();
-                        wordPronunciation = "/" + parts[1].trim() + "/"; // Keep the "/word/" format
+                        wordPronunciation = "/" + parts[1].trim() + "/";
                     } else {
                         wordPronunciation = "";
                     }
@@ -134,7 +138,6 @@ public class mainMenuController implements Initializable {
                 } else if (line.startsWith("-")) {
                     wordExplain += " " + line.substring(1).trim();
                 } else if (!line.isEmpty()) {
-                    // Add the word to the wordList
                     if (currentWord != null) {
                         currentWord.setWordExplain(wordExplain);
                         wordList.add(currentWord);
@@ -207,24 +210,13 @@ public class mainMenuController implements Initializable {
     }
     @FXML
     void launchHangMan(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
-        Parent root = loader.load();
-        HangmanApp hangmanController = loader.getController();
-        Stage newStage = new Stage();
-        newStage.setWidth(600);
-        newStage.setHeight(450);
-        newStage.setResizable(false);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.setTitle("Hangman Game");
-        newStage.show();
 
     }
 
     @FXML
     void addWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Word");
+        dialog.setTitle("Add Word/Phrase");
         dialog.setHeaderText("Enter Word Information");
 
         TextField wordTargetField = new TextField();
@@ -252,10 +244,11 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             String pronunciation = pronunciationField.getText();
             String explanation = explanationField.getText();
-
-            Word newWord = new Word(wordText, explanation, pronunciation);
-            Dictionary.listWord.add(newWord);
-            allWords.add(newWord);
+            if (DictApplication.dbDictionary.lookupWord(wordText) == "N/A") {
+                Word newWord = new Word(wordText, explanation, pronunciation);
+                allWords.add(newWord);
+                DictApplication.dbDictionary.insertWord(wordText, pronunciation, explanation);
+            }
         });
     }
 
@@ -263,7 +256,7 @@ public class mainMenuController implements Initializable {
     void deleteWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Delete Word");
-        dialog.setHeaderText("Enter Word");
+        dialog.setHeaderText("Enter Word/Phrase");
 
         TextField wordTargetField = new TextField();
         wordTargetField.setPromptText("Word");
@@ -281,7 +274,7 @@ public class mainMenuController implements Initializable {
             for (Word w : allWords) {
                 if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     wordFound = true;
-                    Dictionary.listWord.remove(w);
+                    DictApplication.dbDictionary.removeWord(wordText);
                     allWords.remove(w);
                     break;
                 }
@@ -336,17 +329,20 @@ public class mainMenuController implements Initializable {
                     else if (!pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText,pronunciation,w.getWordExplain());
                         break;
                     }
                     else if (pronunciation.isEmpty() && !explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordExplain(explanation);
+                        DictApplication.dbDictionary.modifyWord(wordText,w.getWordPronunciation(),explanation);
                         break;
                     }
                     else {
                         wordFound = true;
                         w.setWordExplain(explanation);
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText, pronunciation, explanation);
                         break;
                     }
                 }
@@ -365,6 +361,156 @@ public class mainMenuController implements Initializable {
         String translatedText = Translator.translate(textToTranslate);
         currentlySelectedWord = textToTranslate;
         textArea.setText(translatedText);
+        addButton = new Button("Add this word/phrase");
+        AnchorPane.setTopAnchor(addButton, 53.0);
+        AnchorPane.setLeftAnchor(addButton, 641.0);
+        addButton.setOnAction(addEvent -> {
+            if (addButton != null) {
+                anchorPane.getChildren().remove(addButton);
+                addButton = null;
+            }
+            if (!check(textToTranslate)) {
+                Word newWord = new Word(textToTranslate, translatedText, null);
+                DictApplication.dbDictionary.insertWord(textToTranslate, null, translatedText);
+                allWords.add(newWord);
+            }
+        });
+        anchorPane.getChildren().add(addButton);
     }
+    public boolean check(String n) {
+        for (Word w : allWords) {
+            if (n.equalsIgnoreCase(w.getWordTarget())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @FXML
+    private void showGameDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Choose a Game");
+        dialog.setHeaderText("Select a game to play:");
+
+        ButtonType game1Button = new ButtonType("Hangman");
+        ButtonType game2Button = new ButtonType("Quiz Time!");
+        ButtonType game3Button = new ButtonType("Word Quiz");
+
+        dialog.getDialogPane().getButtonTypes().addAll(game1Button, game2Button, game3Button, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == game1Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                HangmanApp hangmanController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(600);
+                newStage.setHeight(450);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Hangman Game");
+                newStage.show();
+                System.out.println("Launching Hangman");
+            } else if (buttonType == game2Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("QuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                QuizController quizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Quiz Time");
+                newStage.show();
+                System.out.println("Launching Quiz Time");
+            }
+            else if (buttonType == game3Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("WordQuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                WordQuizController wordQuizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Word Quiz");
+                newStage.show();
+                System.out.println("Launching Word Quiz");
+            }
+            return null;
+        });
+        dialog.showAndWait();
+    }
+
+    @FXML
+    private void showFavourites(ActionEvent event) {
+        List<Word> words = getWordsFromDatabase(favouriteCheckBox.isSelected());
+        allWords.setAll(words);
+    }
+
+    private List<Word> getWordsFromDatabase(boolean showFavourites) {
+        String query = "SELECT Word, Pronunciation, Explanation FROM dictionary WHERE Favourite = ?";
+
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setInt(1, showFavourites ? 1 : 0);
+            return getWordsFromResultSet(ps);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider logging or handling the exception appropriately
+        }
+
+        return new ArrayList<>();
+    }
+
+    private List<Word> getWordsFromResultSet(PreparedStatement ps) throws SQLException {
+        List<Word> words = new ArrayList<>();
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String word = rs.getString("Word");
+                String pronunciation = rs.getString("Pronunciation");
+                String explanation = rs.getString("Explanation");
+
+                // Assuming you have a Word constructor
+                Word currentWord = new Word(word, explanation, pronunciation);
+                words.add(currentWord);
+            }
+        }
+        return words;
+    }
+
+    @FXML
+    public boolean toggleFavourite(ActionEvent event) {
+        String query = "UPDATE dictionary SET Favourite = CASE WHEN Favourite = 1 THEN 0 ELSE 1 END WHERE Word = ?";
+        String wordTarget = currentlySelectedWord;
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setString(1, wordTarget);
+
+            if (ps.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }
 

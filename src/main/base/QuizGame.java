@@ -3,9 +3,10 @@ package base;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class QuizGame {
-    public static final String MCQ = "src/resources//MCQ.txt";
+    public static final String MCQ = "src/resources/output.txt";
 
     private final ArrayList<Question> questions;
 
@@ -24,15 +25,24 @@ public class QuizGame {
              BufferedReader br = new BufferedReader(fr)) {
             String line;
             while ((line = br.readLine()) != null) {
-                int idx = line.lastIndexOf("\t");
-                Question question = new Question(
-                        line.substring(0, idx).replace('\t', '\n'), line.substring(idx + 1));
+                // Split the line into parts using tab as a separator
+                String[] parts = line.split("\t");
+
+                // The prompt is everything before the last part
+                String prompt = String.join("\n", Arrays.copyOfRange(parts, 0, parts.length - 1));
+
+                // The answer is the last part
+                String answer = parts[parts.length - 1];
+
+                Question question = new Question(prompt, answer);
                 questions.add(question);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 
     public int getSize() {
         return questions.size();
