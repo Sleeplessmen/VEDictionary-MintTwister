@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="settingController">
+   <children>
+      <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Chủ đề">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <RadioButton fx:id="themeNordDark" layoutX="100.0" layoutY="213.0" mnemonicParsing="false" onAction="#getTheme" text="Nord">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="Themes" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="themePrimierDark" layoutX="100.0" layoutY="384.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeDracula" layoutX="100.0" layoutY="462.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <Label layoutX="112.0" layoutY="14.0" text="Chọn chủ đề ở đây">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="48.0" />
+                           </font>
+                        </Label>
+                        <RadioButton fx:id="themeCupertinoDark" layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <Label layoutX="100.0" layoutY="121.0" text="Dark">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="36.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="503.0" layoutY="121.0" text="Light">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="36.0" />
+                           </font>
+                        </Label>
+                        <RadioButton fx:id="themeNordLight" layoutX="503.0" layoutY="215.0" mnemonicParsing="false" onAction="#getTheme" text="Nord" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themePrimierLight" layoutX="503.0" layoutY="386.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeCupertinoLight" layoutX="503.0" layoutY="302.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Giọng đọc TTS">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <RadioButton fx:id="voiceENUS" layoutX="114.0" layoutY="138.0" mnemonicParsing="false" onAction="#getVoice" selected="true" text="Anh - Mỹ">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="Voice" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="voiceENCA" layoutX="499.0" layoutY="264.0" mnemonicParsing="false" onAction="#getVoice" text="Anh - Canada" toggleGroup="$Voice">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="voiceENIN" layoutX="499.0" layoutY="138.0" mnemonicParsing="false" onAction="#getVoice" text="Anh - Ấn" toggleGroup="$Voice">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="voiceENAUS" layoutX="114.0" layoutY="398.0" mnemonicParsing="false" onAction="#getVoice" text="Anh - Úc" toggleGroup="$Voice">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="voiceENUK" layoutX="114.0" layoutY="264.0" mnemonicParsing="false" onAction="#getVoice" text="Anh - Anh" toggleGroup="$Voice">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="voiceENIRL" layoutX="499.0" layoutY="398.0" mnemonicParsing="false" onAction="#getVoice" text="Anh - Ireland" toggleGroup="$Voice">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <Label layoutX="198.0" layoutY="24.0" text="Chọn giọng đọc">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="48.0" />
+                           </font>
+                        </Label>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <ImageView blendMode="SCREEN" fitHeight="600.0" fitWidth="800.0" mouseTransparent="true" opacity="0.4">
+         <image>
+            <Image url="@/BG.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

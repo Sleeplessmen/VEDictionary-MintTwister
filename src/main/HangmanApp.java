@@ -89,12 +89,10 @@ public class HangmanApp extends Application implements Initializable {
                     messageLabel.setText("Congratulations!");
                     messageLabel.setDisable(true);
                     textField.setEditable(false);
-                    hintText.setText("");
                 } else if (incorrectGuesses == MAX_INCORRECT_GUESSES) {
                     messageLabel.setText("The answer is: " + secretWord);
                     messageLabel.setDisable(true);
                     textField.setEditable(false);
-                    hintText.setText("");
                 }
             } else {
                 System.out.println("Error: currentWordState is not initialized.");
