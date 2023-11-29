@@ -1,3 +1,4 @@
+import base.Dictionary;
 import com.sun.javafx.tk.TKStage;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -21,10 +22,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +46,7 @@ public class mainMenuController implements Initializable {
     @FXML
     private AnchorPane scenePane;
     @FXML
-    private MenuItem importFile, exportFile;
+    private MenuItem importFile, exportFile, aboutItem;
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
@@ -82,20 +80,20 @@ public class mainMenuController implements Initializable {
                 String pronunciation = selectedWord.getWordPronunciation();
                 String explanation = selectedWord.getWordExplain();
                 currentlySelectedWord = selectedWord.getWordTarget();
-                textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
+                textArea.setText("Pronunciation: " + "/" + pronunciation + "/" + "\nExplanation: " + explanation);
             }
         });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchDictionary();
         });
     }
-    public ObservableList<Word> insertFromFile() {
+    public ObservableList<Word> insertFromFile(String path) {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
         String wordTarget = "";
         String wordExplain = "";
         String wordPronunciation = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\VEDictionary-MintTwister\\src\\resources\\anhviet109K.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             Word currentWord = null;
 
@@ -155,13 +153,37 @@ public class mainMenuController implements Initializable {
     @FXML
     void exportToFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("output.txt");
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            export(file);
+        }
+    }
+
+    private void export(File file) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+            String format = "%-15s %-20s %-15s%n";
+            for (Word word : allWords) {
+                bufferedWriter.write(String.format(format, word.getWordTarget(), "/" + word.getWordPronunciation() + "/", word.getWordExplain()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void importFromFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            allWords = insertFromFile(selectedFile.getPath());
+            filteredWords = new FilteredList<>(allWords);
+            wordList.setItems(filteredWords);
+        }
     }
     public mainMenuController() {
     }
@@ -350,6 +372,149 @@ public class mainMenuController implements Initializable {
         String translatedText = Translator.translate(textToTranslate);
         currentlySelectedWord = textToTranslate;
         textArea.setText(translatedText);
+    }
+    public boolean check(String n) {
+        for (Word w : allWords) {
+            if (n.equalsIgnoreCase(w.getWordTarget())) {
+                return true;
+            }
+        }
+        return false;
+    }
+    @FXML
+    private void showGameDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Choose a Game");
+        dialog.setHeaderText("Select a game to play:");
+
+        ButtonType game1Button = new ButtonType("Hangman");
+        ButtonType game2Button = new ButtonType("Quiz Time!");
+        ButtonType game3Button = new ButtonType("Word Quiz");
+
+        dialog.getDialogPane().getButtonTypes().addAll(game1Button, game2Button, game3Button, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == game1Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                HangmanApp hangmanController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(600);
+                newStage.setHeight(450);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Hangman Game");
+                newStage.show();
+                System.out.println("Launching Hangman");
+            } else if (buttonType == game2Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("QuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                QuizController quizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Quiz Time");
+                newStage.show();
+                System.out.println("Launching Quiz Time");
+            }
+            else if (buttonType == game3Button) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("WordQuizScene.fxml"));
+                Parent root = null;
+                try {
+                    root = loader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                WordQuizController wordQuizController = loader.getController();
+                Stage newStage = new Stage();
+                newStage.setWidth(800);
+                newStage.setHeight(600);
+                newStage.setResizable(false);
+                Scene scene = new Scene(root);
+                newStage.setScene(scene);
+                newStage.setTitle("Word Quiz");
+                newStage.show();
+                System.out.println("Launching Word Quiz");
+            }
+            return null;
+        });
+        dialog.showAndWait();
+    }
+
+    @FXML
+    private void showFavourites(ActionEvent event) {
+        List<Word> words = getWordsFromDatabase(favouriteCheckBox.isSelected());
+        allWords.setAll(words);
+    }
+
+    private List<Word> getWordsFromDatabase(boolean showFavourites) {
+        String query = "SELECT Word, Pronunciation, Explanation FROM dictionary WHERE Favourite = ?";
+
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setInt(1, showFavourites ? 1 : 0);
+            return getWordsFromResultSet(ps);
+        } catch (SQLException e) {
+            e.printStackTrace(); // Consider logging or handling the exception appropriately
+        }
+
+        return new ArrayList<>();
+    }
+
+    private List<Word> getWordsFromResultSet(PreparedStatement ps) throws SQLException {
+        List<Word> words = new ArrayList<>();
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String word = rs.getString("Word");
+                String pronunciation = rs.getString("Pronunciation");
+                String explanation = rs.getString("Explanation");
+
+                // Assuming you have a Word constructor
+                Word currentWord = new Word(word, explanation, pronunciation);
+                words.add(currentWord);
+            }
+        }
+        return words;
+    }
+
+    @FXML
+    public boolean toggleFavourite(ActionEvent event) {
+        String query = "UPDATE dictionary SET Favourite = CASE WHEN Favourite = 1 THEN 0 ELSE 1 END WHERE Word = ?";
+        String wordTarget = currentlySelectedWord;
+        try (PreparedStatement ps = DictApplication.dbDictionary.con.prepareStatement(query)) {
+            ps.setString(1, wordTarget);
+
+            if (ps.executeUpdate() == 0) {
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @FXML
+    void showAbout(ActionEvent event) {
+        Alert aboutDialog = new Alert(Alert.AlertType.INFORMATION);
+        aboutDialog.setTitle("About");
+        aboutDialog.setHeaderText("MintTwister");
+        aboutDialog.setContentText("An English learning application, made as an OOP project, by Le Cong Hoang, Nguyen Cong Khai and Do Hoai Nam");
+        aboutDialog.showAndWait();
     }
 }
 
