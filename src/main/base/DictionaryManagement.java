@@ -162,7 +162,7 @@ public class DictionaryManagement extends Dictionary {
                 System.out.println("Invalid input. Please enter an positive integer.");
                 System.out.println("Continue to add word? Yes(y)/No(n)");
                 char query = scanner.nextLine().charAt(0);
-                if (query == 'n')  {
+                if (query == 'n') {
                     return;
                 }
             }
@@ -192,7 +192,22 @@ public class DictionaryManagement extends Dictionary {
                 }
             }
         }
-    }
+    
+
+                if (!wordTarget.isEmpty() && !wordPronunciation.isEmpty() && !wordExplain.isEmpty()) {
+                    listWord.add(new Word(wordTarget, wordExplain, wordPronunciation));
+                    System.out.println("Add word successfully to the dictionary.");
+                    Collections.sort(listWord);
+                    break;
+                } else {
+                    System.err.println("Word, pronunciation, or explanation cannot be empty.");
+                    System.out.print("Continue? Yes(1) No(2): ");
+                    option = Integer.parseInt(scanner.nextLine().trim());
+                    if (option != 1) {
+                        return;
+                    }
+                }
+            }
 
     public void editWord() {
         System.out.print("Enter the word to edit: ");

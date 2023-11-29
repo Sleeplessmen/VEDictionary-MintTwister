@@ -205,21 +205,6 @@ public class mainMenuController implements Initializable {
         filteredWords.setPredicate(word ->
                 word.getWordTarget().toLowerCase().startsWith(searchKeyword));
     }
-    @FXML
-    void launchHangMan(ActionEvent event) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("HangmanController.fxml"));
-        Parent root = loader.load();
-        HangmanApp hangmanController = loader.getController();
-        Stage newStage = new Stage();
-        newStage.setWidth(600);
-        newStage.setHeight(450);
-        newStage.setResizable(false);
-        Scene scene = new Scene(root);
-        newStage.setScene(scene);
-        newStage.setTitle("Hangman Game");
-        newStage.show();
-
-    }
 
     @FXML
     void addWord(ActionEvent event) {
