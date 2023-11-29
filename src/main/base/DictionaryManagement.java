@@ -150,6 +150,7 @@ public class DictionaryManagement extends Dictionary {
     public void addWord() {
         Scanner scanner = new Scanner(System.in);
         int numberOfWords = 0;
+        int option = 0;
         boolean validInput = false;
         while (!validInput) {
             System.out.println("Number of words: ");
@@ -161,27 +162,35 @@ public class DictionaryManagement extends Dictionary {
                 System.out.println("Invalid input. Please enter an positive integer.");
                 System.out.println("Continue to add word? Yes(y)/No(n)");
                 char query = scanner.nextLine().charAt(0);
-                if (query == 'n')  {
+                if (query == 'n') {
                     return;
                 }
             }
         }
 
-        while (numberOfWords-- > 0) {
-            System.out.println("Enter a new word: ");
-            String wordTarget = scanner.nextLine().trim().toLowerCase();
-            System.out.println("Enter pronunciation: ");
-            String wordPronunciation = scanner.nextLine().trim().toLowerCase();
-            System.out.println("Enter meanings of the word: ");
-            String wordExplain = scanner.nextLine().trim().toLowerCase();
-            int idx = binarySearchWordTarget(0, listWord.size(), wordTarget);
-            if (idx == 0) {
-                System.out.println("The word already exists in the dictionary.");
-                return;
+        for (int i = 0; i < numberOfWords; i++) {
+            while (true) {
+                System.out.println("Enter a new word: ");
+                String wordTarget = scanner.nextLine().trim().toLowerCase();
+                System.out.println("Enter pronunciation: ");
+                String wordPronunciation = scanner.nextLine().trim().toLowerCase();
+                System.out.println("Enter meanings of the word: ");
+                String wordExplain = scanner.nextLine().trim().toLowerCase();
+
+                if (!wordTarget.isEmpty() && !wordPronunciation.isEmpty() && !wordExplain.isEmpty()) {
+                    listWord.add(new Word(wordTarget, wordExplain, wordPronunciation));
+                    System.out.println("Add word successfully to the dictionary.");
+                    Collections.sort(listWord);
+                    break;
+                } else {
+                    System.err.println("Word, pronunciation, or explanation cannot be empty.");
+                    System.out.print("Continue? Yes(1) No(2): ");
+                    option = Integer.parseInt(scanner.nextLine().trim());
+                    if (option != 1) {
+                        return;
+                    }
+                }
             }
-            listWord.add(new Word(wordTarget, wordExplain, wordPronunciation));
-            System.out.println("Add word successfully to the dictionary.");
-            Collections.sort(listWord);
         }
     }
 

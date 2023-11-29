@@ -208,10 +208,6 @@ public class mainMenuController implements Initializable {
         filteredWords.setPredicate(word ->
                 word.getWordTarget().toLowerCase().startsWith(searchKeyword));
     }
-    @FXML
-    void launchHangMan(ActionEvent event) throws Exception {
-
-    }
 
     @FXML
     void addWord(ActionEvent event) {
