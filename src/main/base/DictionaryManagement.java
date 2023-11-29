@@ -121,18 +121,13 @@ public class DictionaryManagement extends Dictionary {
         } while (query == 1);
     }
         public static void exportToFile() {
-            try {
-                File file = new File(OUTPUTFILEPATH);
-                OutputStream outputStream = new FileOutputStream(file);
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
-                String format = "%-15s %-15s%n";
+            File file = new File(OUTPUTFILEPATH);
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+                String format = "%-15s %-20s %-15s%n";
                 for (Word word : listWord) {
-                    bufferedWriter.write(String.format(format, word.getWordTarget(), word.getWordExplain()));
+                    bufferedWriter.write(String.format(format, word.getWordTarget(), word.getWordPronunciation(), word.getWordExplain()));
                 }
-                bufferedWriter.flush();
-                bufferedWriter.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

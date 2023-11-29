@@ -1,3 +1,4 @@
+import base.Dictionary;
 import com.sun.javafx.tk.TKStage;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -21,10 +22,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,7 +48,7 @@ public class mainMenuController implements Initializable {
     @FXML
     private AnchorPane scenePane;
     @FXML
-    private MenuItem importFile, exportFile;
+    private MenuItem importFile, exportFile, aboutItem;
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
@@ -86,20 +84,20 @@ public class mainMenuController implements Initializable {
                 String pronunciation = selectedWord.getWordPronunciation();
                 String explanation = selectedWord.getWordExplain();
                 currentlySelectedWord = selectedWord.getWordTarget();
-                textArea.setText("Pronunciation: " + pronunciation + "\nExplanation: " + explanation);
+                textArea.setText("Pronunciation: " + "/" + pronunciation + "/" + "\nExplanation: " + explanation);
             }
         });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             searchDictionary();
         });
     }
-    public ObservableList<Word> insertFromFile() {
+    public ObservableList<Word> insertFromFile(String path) {
         ObservableList<Word> wordList = FXCollections.observableArrayList();
         String wordTarget = "";
         String wordExplain = "";
         String wordPronunciation = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\cusnaruto\\Downloads\\Uni Stuffs\\OOP\\BigProject\\VEDictionary-MintTwister\\src\\resources\\anhviet109K.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             Word currentWord = null;
 
@@ -158,13 +156,37 @@ public class mainMenuController implements Initializable {
     @FXML
     void exportToFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialFileName("output.txt");
+        File file = fileChooser.showSaveDialog(stage);
+        if (file != null) {
+            export(file);
+        }
+    }
+
+    private void export(File file) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+            String format = "%-15s %-20s %-15s%n";
+            for (Word word : allWords) {
+                bufferedWriter.write(String.format(format, word.getWordTarget(), "/" + word.getWordPronunciation() + "/", word.getWordExplain()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void importFromFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            allWords = insertFromFile(selectedFile.getPath());
+            filteredWords = new FilteredList<>(allWords);
+            wordList.setItems(filteredWords);
+        }
     }
     public mainMenuController() {
     }
@@ -508,5 +530,13 @@ public class mainMenuController implements Initializable {
         return true;
     }
 
+    @FXML
+    void showAbout(ActionEvent event) {
+        Alert aboutDialog = new Alert(Alert.AlertType.INFORMATION);
+        aboutDialog.setTitle("About");
+        aboutDialog.setHeaderText("MintTwister");
+        aboutDialog.setContentText("An English learning application, made as an OOP project, by Le Cong Hoang, Nguyen Cong Khai and Do Hoai Nam");
+        aboutDialog.showAndWait();
+    }
 }
 
