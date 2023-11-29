@@ -75,7 +75,7 @@ public class DictionaryCommandline {
                 myDictionaryMng.insertWordFromFile();
                 break;
             case '9':
-                myDictionaryMng.exportWordToFile();
+                myDictionaryMng.exportToFile();
                 break;
             default:
                 System.out.println("Action not supported.");

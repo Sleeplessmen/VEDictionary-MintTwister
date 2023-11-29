@@ -105,46 +105,46 @@ public class DictionaryManagement extends Dictionary {
         Scanner scanner = new Scanner(System.in);
         int query;
         do {
-            System.out.print("enter the word:");
+            System.out.print("Enter the word: ");
             String wordTarget = scanner.nextLine();
-            int idx = Collections.binarySearch(listWord, new Word(wordTarget, null));
+            Collections.sort(listWord);
+            int idx = Collections.binarySearch(listWord, new Word(wordTarget, null, null));
             if (idx >= 0) {
                 System.out.println(listWord.get(idx).getWordPronunciation());
                 System.out.println(listWord.get(idx).getWordExplain());
             } else {
                 System.out.println("The word does not exist in the dictionary.");
             }
-            System.out.print("Do you want to continue to look up? Yes(1) No(2):");
+
+            System.out.print("Do you want to continue to look up? Yes(1) No(2): ");
             query = Integer.parseInt(scanner.nextLine());
         } while (query == 1);
     }
-
-    public void exportWordToFile() {
-        try (FileOutputStream fos = new FileOutputStream(OUTPUTFILEPATH);
-             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos))) {
-            int number = 1;
-
-            for (Word word : listWord) {
-                // Format: Number. WordTarget WordPronunciation
-                bw.write(number + ". " + word.getWordTarget() + " " + word.getWordPronunciation());
-                bw.newLine();
-
-                // WordExplain
-                String[] explanations = word.getWordExplain().split("\n");
-                for (String explanation : explanations) {
-                    // Add bullet point for each explanation line
-                    bw.write("- " + explanation.trim());
-                    bw.newLine();
+        public static void exportToFile() {
+            try {
+                File file = new File(OUTPUTFILEPATH);
+                OutputStream outputStream = new FileOutputStream(file);
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+                BufferedWriter bufferedWriter = new BufferedWriter(outputStreamWriter);
+                String format = "%-15s %-15s%n";
+                for (Word word : listWord) {
+                    bufferedWriter.write(String.format(format, word.getWordTarget(), word.getWordExplain()));
                 }
-
-                // Separate entries with an empty line
-                bw.newLine();
-
-                number++;
+                bufferedWriter.flush();
+                bufferedWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+    private static String formatMeanings(String wordExplain) {
+        // Split meanings by newline and add a hyphen before each
+        String[] meanings = wordExplain.split("\\n");
+        StringBuilder formattedMeanings = new StringBuilder();
+        for (String meaning : meanings) {
+            formattedMeanings.append("-").append(meaning.trim()).append("\n");
+        }
+        return formattedMeanings.toString();
     }
 
     public void addWord() {
