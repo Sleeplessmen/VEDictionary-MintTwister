@@ -31,7 +31,7 @@ public class DictApplication extends Application {
             mainMenuController mainMenuController = loader.getController();
             Image icon = new Image("icon.jpg");
             stage.getIcons().add(icon);
-            stage.setTitle("chit fumo");
+            stage.setTitle("MintTwister");
             stage.setWidth(1280);
             stage.setHeight(720);
             stage.setResizable(false);

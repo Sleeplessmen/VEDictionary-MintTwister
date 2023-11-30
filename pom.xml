@@ -80,12 +80,6 @@
           <version>21-ea+24</version>
       </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.2.0</version> <!-- Use the version you downloaded -->
-    </dependency>
-
-    <dependency>
       <groupId>net.clojars.suuft</groupId>
       <artifactId>libretranslate-java</artifactId>
       <version>1.0.5</version>
@@ -93,6 +87,7 @@
   </dependencies>
 
   <build>
+      <outputDirectory>target/classes</outputDirectory>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
