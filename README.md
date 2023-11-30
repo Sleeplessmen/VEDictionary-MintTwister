@@ -83,7 +83,6 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://osugame.fandom.com/wiki/727)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -91,7 +90,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-![Java](https://img.shields.io/badge/Java-d8dee9?style=flat-square&labelColor=2e3440 "Java Logo") and ![JavaFX](hhttps://img.shields.io/badge/JavaFX-2e3440?style=flat-square&labelColor=d8dee9 "JavaFX Logo")
+![Java](https://img.shields.io/badge/Java-d8dee9?style=flat-square&labelColor=2e3440 "Java Logo") and ![JavaFX](https://img.shields.io/badge/JavaFX-2e3440?style=flat-square&labelColor=d8dee9 "JavaFX Logo")
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -109,19 +108,11 @@ Maven
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+* Cài đặt JDK 20 tại đây, có thể sử dụng Intellij, Eclipse hoặc Netbean để chạy chương trình viết bằng Java.
+* Sau khi tải mã nguồn, cần import file lib đã có sẵn vào project. Trong lib đã có đủ các file cần thiết để có thể chạy được chương trình.
+* Tìm đến src/main/DictApplication.java và chạy chương trình.
+* Nếu muốn dùng bản Commandline, chạy hàm main ở DictionaryCommandline.java 
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -138,6 +129,11 @@ This is a simple GUI English learning application with as many features we can t
 * Import from / Export to file
 * 3 games for learning English
 
+![Screenshot_2](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot2.png)
+![Screenshot_3](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot3.png)
+![Screenshot_4](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot4.png)
+![Screenshot_5](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot5.png)
+![Screenshot_6](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot6.png)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -190,17 +186,15 @@ Here's the things we used to create this project
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [contributors-url]: https://github.com/Sleeplessmen/VEDictionary-MintTwister/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [forks-url]: https://github.com/Sleeplessmen/VEDictionary-MintTwister/network
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [license-url]: https://github.com/Sleeplessmen/VEDictionary-MintTwister/blob/main/LICENSE
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: src\resources\screenshot1.png
 
