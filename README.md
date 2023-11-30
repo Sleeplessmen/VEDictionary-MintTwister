@@ -81,7 +81,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://osugame.fandom.com/wiki/727)
+![Screenshot_1](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot1.png)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
