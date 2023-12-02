@@ -27,11 +27,11 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import base.*;
 public class mainMenuController implements Initializable {
@@ -39,6 +39,8 @@ public class mainMenuController implements Initializable {
     protected ObservableList<Word> allWords = FXCollections.observableArrayList();
     private FilteredList<Word> filteredWords;
     private String currentlySelectedWord;
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private Stage stage;
     private Scene scene;
@@ -50,9 +52,11 @@ public class mainMenuController implements Initializable {
     @FXML
     protected static ImageView bgImage = new ImageView();
     @FXML
-    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton;
+    private Button addWordButton, deleteWordButton, editWordButton, settingButton, gameButton, ttsButton, translateButton, addButton, addToFavouriteButton;
     @FXML
     private ListView<Word> wordList;
+    @FXML
+    private CheckBox favouriteCheckBox;
     @FXML
     private TextArea textArea;
     @FXML
@@ -105,7 +109,7 @@ public class mainMenuController implements Initializable {
                     String[] parts = wordTarget.split("/");
                     if (parts.length > 1) {
                         wordTarget = parts[0].trim();
-                        wordPronunciation = "/" + parts[1].trim() + "/"; // Keep the "/word/" format
+                        wordPronunciation = "/" + parts[1].trim() + "/";
                     } else {
                         wordPronunciation = "";
                     }
@@ -132,7 +136,6 @@ public class mainMenuController implements Initializable {
                 } else if (line.startsWith("-")) {
                     wordExplain += " " + line.substring(1).trim();
                 } else if (!line.isEmpty()) {
-                    // Add the word to the wordList
                     if (currentWord != null) {
                         currentWord.setWordExplain(wordExplain);
                         wordList.add(currentWord);
@@ -231,7 +234,7 @@ public class mainMenuController implements Initializable {
     @FXML
     void addWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Word");
+        dialog.setTitle("Add Word/Phrase");
         dialog.setHeaderText("Enter Word Information");
 
         TextField wordTargetField = new TextField();
@@ -259,10 +262,11 @@ public class mainMenuController implements Initializable {
             String wordText = wordTargetField.getText();
             String pronunciation = pronunciationField.getText();
             String explanation = explanationField.getText();
-
-            Word newWord = new Word(wordText, explanation, pronunciation);
-            Dictionary.listWord.add(newWord);
-            allWords.add(newWord);
+            if (DictApplication.dbDictionary.lookupWord(wordText) == "N/A") {
+                Word newWord = new Word(wordText, explanation, pronunciation);
+                allWords.add(newWord);
+                DictApplication.dbDictionary.insertWord(wordText, pronunciation, explanation);
+            }
         });
     }
 
@@ -270,7 +274,7 @@ public class mainMenuController implements Initializable {
     void deleteWord(ActionEvent event) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Delete Word");
-        dialog.setHeaderText("Enter Word");
+        dialog.setHeaderText("Enter Word/Phrase");
 
         TextField wordTargetField = new TextField();
         wordTargetField.setPromptText("Word");
@@ -288,7 +292,7 @@ public class mainMenuController implements Initializable {
             for (Word w : allWords) {
                 if (wordText.equalsIgnoreCase(w.getWordTarget())) {
                     wordFound = true;
-                    Dictionary.listWord.remove(w);
+                    DictApplication.dbDictionary.removeWord(wordText);
                     allWords.remove(w);
                     break;
                 }
@@ -343,17 +347,20 @@ public class mainMenuController implements Initializable {
                     else if (!pronunciation.isEmpty() && explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText,pronunciation,w.getWordExplain());
                         break;
                     }
                     else if (pronunciation.isEmpty() && !explanation.isEmpty()) {
                         wordFound = true;
                         w.setWordExplain(explanation);
+                        DictApplication.dbDictionary.modifyWord(wordText,w.getWordPronunciation(),explanation);
                         break;
                     }
                     else {
                         wordFound = true;
                         w.setWordExplain(explanation);
                         w.setWordPronunciation(pronunciation);
+                        DictApplication.dbDictionary.modifyWord(wordText, pronunciation, explanation);
                         break;
                     }
                 }
@@ -372,6 +379,21 @@ public class mainMenuController implements Initializable {
         String translatedText = Translator.translate(textToTranslate);
         currentlySelectedWord = textToTranslate;
         textArea.setText(translatedText);
+        addButton = new Button("Add this word/phrase");
+        AnchorPane.setTopAnchor(addButton, 53.0);
+        AnchorPane.setLeftAnchor(addButton, 641.0);
+        addButton.setOnAction(addEvent -> {
+            if (addButton != null) {
+                anchorPane.getChildren().remove(addButton);
+                addButton = null;
+            }
+            if (!check(textToTranslate)) {
+                Word newWord = new Word(textToTranslate, translatedText, null);
+                DictApplication.dbDictionary.insertWord(textToTranslate, null, translatedText);
+                allWords.add(newWord);
+            }
+        });
+        anchorPane.getChildren().add(addButton);
     }
     public boolean check(String n) {
         for (Word w : allWords) {
