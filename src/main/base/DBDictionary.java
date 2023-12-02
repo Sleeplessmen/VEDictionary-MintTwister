@@ -12,10 +12,10 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 public class DBDictionary {
-    private static Connection con = null;
+    public static Connection con = null;
     private final String url = "jdbc:mysql://localhost:3306/dict2";
     private final String username = "root";
-    private final String password = "hoang1234";
+    private final String password = "minttwister";
 
     public DBDictionary() {
     }
