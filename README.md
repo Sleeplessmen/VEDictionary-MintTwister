@@ -81,7 +81,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Screenshot_1](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot1.png)
+[![Product Name Screen Shot][product-screenshot]](https://osugame.fandom.com/wiki/727)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -105,9 +105,20 @@ To get a local copy up and running follow these simple example steps.
 
 Java JDK 20+
 Maven
+XAMPP
 
 ### Installation
 
+Start XAMPP (Start Apache and MYSQL).
+Ensure localhost port is 3306 (XAMPP default port).
+Add a new user:
+Name: root
+Password: minttwister
+Enable option [o] Create database with same name and grant all privileges.
+Import dictionary.sql into the database en-vi-dictionary (src/main/resources/sql/dictionary.sql).
+Note: You can configure your own username, port, password, ... by changing those accordingly in src/main/base/DBDictionary.java
+
+After uploading the dictionary.sql file, next time you only need to start XAMPP (Start Apache and MYSQL) if you want to use the dictionary with MYSQL Database.
 * Cài đặt JDK 20 tại đây, có thể sử dụng Intellij, Eclipse hoặc Netbean để chạy chương trình viết bằng Java.
 * Sau khi tải mã nguồn, cần import file lib đã có sẵn vào project. Trong lib đã có đủ các file cần thiết để có thể chạy được chương trình.
 * Tìm đến src/main/DictApplication.java và chạy chương trình.
@@ -165,7 +176,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 * Nguyen Cong Khai - 22026562@vnu.edu.vn
 
-* Do Hoai Nam - 22026528@vnu.edu.vn
+* Do Hoai Nam - ...
 
 Project Link: [MintTwister](https://github.com/Sleeplessmen/VEDictionary-MintTwister)
 
