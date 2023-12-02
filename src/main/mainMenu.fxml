@@ -22,20 +22,20 @@
          </image>
       </ImageView>
       <MenuBar layoutY="-5.0" prefHeight="38.0" prefWidth="1282.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
                   <MenuItem fx:id="importFile" mnemonicParsing="false" onAction="#importFromFile" text="Nhập từ file" />
                   <MenuItem fx:id="exportFile" mnemonicParsing="false" onAction="#exportToFile" text="Xuất thành file" />
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#showAbout" text="About" />
-            </items>
-          </Menu>
-        </menus>
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#showAbout" text="About" />
+               </items>
+            </Menu>
+         </menus>
       </MenuBar>
       <Label layoutX="7.0" layoutY="35.0" prefHeight="33.0" prefWidth="170.0" text="ミントツイスター。">
          <font>

@@ -539,4 +539,3 @@ public class mainMenuController implements Initializable {
         aboutDialog.showAndWait();
     }
 }
-
