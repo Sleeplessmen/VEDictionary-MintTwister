@@ -58,38 +58,26 @@ public class DictionaryManagement extends Dictionary {
             String wordTarget = "";
             StringBuilder wordExplain = new StringBuilder();
             String wordPronunciation = "";
-
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
                 if (line.startsWith("@")) {
-                    // Extract the word target
                     wordTarget = line.substring(1).trim();
-                } else if (line.startsWith("*")) {
-                    // Extract the word explanation and pronunciation
-                    String lineContents = line.substring(1).trim();
-
-                    // Check for pronunciation enclosed in "/" characters
-                    int pronunciationStart = lineContents.indexOf('/');
+                    int pronunciationStart = wordTarget.indexOf('/');
                     if (pronunciationStart != -1) {
-                        int pronunciationEnd = lineContents.lastIndexOf('/');
+                        int pronunciationEnd = wordTarget.lastIndexOf('/');
                         if (pronunciationEnd > pronunciationStart) {
-                            wordExplain = new StringBuilder(lineContents.substring(0, pronunciationStart).trim());
-                            wordPronunciation = lineContents.substring(pronunciationStart + 1, pronunciationEnd).trim();
-                        } else {
-                            wordExplain = new StringBuilder(lineContents);
+                            wordPronunciation = wordTarget.substring(pronunciationStart + 1, pronunciationEnd).trim();
+                            wordTarget = wordTarget.substring(0, pronunciationStart).trim();
                         }
-                    } else {
-                        wordExplain = new StringBuilder(lineContents);
                     }
+                } else if (line.startsWith("*")) {
+                    String lineContents = line.substring(1).trim();
+                    wordExplain = new StringBuilder(lineContents);
                 } else if (line.startsWith("-")) {
-                    // Append the word meaning to the word explanation
                     wordExplain.append(" ").append(line.substring(1).trim());
                 } else if (!line.isEmpty()) {
-                    // Add the word to the dictionary list
                     Word word = new Word(wordTarget, wordExplain.toString(), wordPronunciation);
                     listWord.add(word);
-
-                    // Reset variables for the next word
                     wordTarget = "";
                     wordExplain = new StringBuilder();
                     wordPronunciation = "";
@@ -133,7 +121,6 @@ public class DictionaryManagement extends Dictionary {
         }
 
     private static String formatMeanings(String wordExplain) {
-        // Split meanings by newline and add a hyphen before each
         String[] meanings = wordExplain.split("\\n");
         StringBuilder formattedMeanings = new StringBuilder();
         for (String meaning : meanings) {
@@ -144,8 +131,8 @@ public class DictionaryManagement extends Dictionary {
 
     public void addWord() {
         Scanner scanner = new Scanner(System.in);
-        int option = 0;
         int numberOfWords = 0;
+        int option = 0;
         boolean validInput = false;
         while (!validInput) {
             System.out.println("Number of words: ");
@@ -187,22 +174,27 @@ public class DictionaryManagement extends Dictionary {
                 }
             }
         }
-    
+    }
 
-                if (!wordTarget.isEmpty() && !wordPronunciation.isEmpty() && !wordExplain.isEmpty()) {
-                    listWord.add(new Word(wordTarget, wordExplain, wordPronunciation));
-                    System.out.println("Add word successfully to the dictionary.");
-                    Collections.sort(listWord);
-                    break;
-                } else {
-                    System.err.println("Word, pronunciation, or explanation cannot be empty.");
-                    System.out.print("Continue? Yes(1) No(2): ");
-                    option = Integer.parseInt(scanner.nextLine().trim());
-                    if (option != 1) {
-                        return;
-                    }
-                }
-            }
+    public int binarySearchWordTarget(int start, int end, String wordTarget) {
+        if (start > end) {
+            return -1;
+        }
+        int mid = start + ((end - start) / 2);
+        if (mid == 0 && listWord.isEmpty()) {
+            return -1;
+        }
+        int comp = wordTarget.compareTo(listWord.get(mid).getWordTarget());
+        if (comp == 0) {
+            return 0;
+        } else if (comp < 0) {
+            // Return the result of the recursive call
+            return binarySearchWordTarget(start, mid - 1, wordTarget);
+        } else {
+            // Return the result of the recursive call
+            return binarySearchWordTarget(mid + 1, end, wordTarget);
+        }
+    }
 
     public void editWord() {
         System.out.print("Enter the word to edit: ");
@@ -288,6 +280,10 @@ public class DictionaryManagement extends Dictionary {
         Random random = new Random();
         QuizGame qg = new QuizGame();
         qg.readquestionsfromFile();
+
+        // Set of valid options
+        Set<String> validOptions = Set.of("a", "b", "c", "d");
+
         System.out.println(" ******RANDOM QUIZ GAME****** ");
         System.out.println("  (Multiple-choice question)  ");
         System.out.println("1.Start");
@@ -297,24 +293,32 @@ public class DictionaryManagement extends Dictionary {
         if (query == 2) {
             return;
         }
+
         do {
             idx = random.nextInt(qg.getSize());
             QuizGame.Question currentQuestion = qg.getQuestions().get(idx);
             System.out.println(currentQuestion.prompt());
             System.out.println("Your choice (a, b, c, or d):");
             String userAnswer = scanner.nextLine().toLowerCase();
-            String correctAnswer = currentQuestion.answer().toLowerCase();
 
-            if (userAnswer.equals(correctAnswer)) {
-                System.out.println("Correct answer.");
+            // Check if the userAnswer is a valid option
+            if (validOptions.contains(userAnswer)) {
+                String correctAnswer = currentQuestion.answer().toLowerCase();
+
+                if (userAnswer.equals(correctAnswer)) {
+                    System.out.println("Correct answer.");
+                } else {
+                    System.out.println("Wrong answer. The correct answer is: " + correctAnswer);
+                }
             } else {
-                System.out.println("Wrong answer. The correct answer is: " + correctAnswer);
+                System.out.println("Invalid choice. Please enter a, b, c, or d.");
             }
 
             System.out.print("Continue? Yes(1) No(2):");
             query = Integer.parseInt(scanner.nextLine());
         } while (query == 1);
     }
+
 }
 
 
