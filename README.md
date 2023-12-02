@@ -165,7 +165,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 * Nguyen Cong Khai - 22026562@vnu.edu.vn
 
-* Do Hoai Nam - ...
+* Do Hoai Nam - 22026528@vnu.edu.vn
 
 Project Link: [MintTwister](https://github.com/Sleeplessmen/VEDictionary-MintTwister)
 
