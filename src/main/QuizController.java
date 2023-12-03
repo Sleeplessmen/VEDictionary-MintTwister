@@ -68,4 +68,3 @@ public class QuizController extends QuizGameTemplate {
         showNextQuestion();
     }
 }
-

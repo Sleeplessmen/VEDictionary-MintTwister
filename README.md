@@ -106,23 +106,22 @@ To get a local copy up and running follow these simple example steps.
 Java JDK 20+
 Maven
 XAMPP
+An IDE like Intellij, Eclipse,...
 
 ### Installation
 
-Start XAMPP (Start Apache and MYSQL).
-Ensure localhost port is 3306 (XAMPP default port).
-Add a new user:
-Name: root
-Password: minttwister
-Enable option [o] Create database with same name and grant all privileges.
-Import dictionary.sql into the database en-vi-dictionary (src/main/resources/sql/dictionary.sql).
+* Start XAMPP (Start Apache and MYSQL).
+* Ensure localhost port is 3306 (XAMPP default port).
+* Add a new user:
+* Name: root
+* Password: minttwister
+* Enable option [o] Create database with same name and grant all privileges.
+* Import dictionary.sql into the database en-vi-dictionary (src/resources/dictionary.sql).
 Note: You can configure your own username, port, password, ... by changing those accordingly in src/main/base/DBDictionary.java
-
-After uploading the dictionary.sql file, next time you only need to start XAMPP (Start Apache and MYSQL) if you want to use the dictionary with MYSQL Database.
-* Cài đặt JDK 20 tại đây, có thể sử dụng Intellij, Eclipse hoặc Netbean để chạy chương trình viết bằng Java.
-* Sau khi tải mã nguồn, cần import file lib đã có sẵn vào project. Trong lib đã có đủ các file cần thiết để có thể chạy được chương trình.
-* Tìm đến src/main/DictApplication.java và chạy chương trình.
-* Nếu muốn dùng bản Commandline, chạy hàm main ở DictionaryCommandline.java 
+* After uploading the dictionary.sql file, next time you only need to start XAMPP (Start Apache and MYSQL) if you want to use the dictionary with MYSQL Database.
+* Import necessary libraries to the project, you can find it in the lib folder
+* Navigate to src/main/DictApplication.java to run the GUI version.
+* Run the main function in DictionaryCommandline.java to run the CLI version.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -176,7 +175,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 * Nguyen Cong Khai - 22026562@vnu.edu.vn
 
-* Do Hoai Nam - ...
+* Do Hoai Nam - 22026528@vnu.edu.vn
 
 Project Link: [MintTwister](https://github.com/Sleeplessmen/VEDictionary-MintTwister)
 
@@ -208,4 +207,3 @@ Here's the things we used to create this project
 [license-shield]: https://img.shields.io/github/license/Sleeplessmen/VEDictionary-MintTwister.svg?style=for-the-badge
 [license-url]: https://github.com/Sleeplessmen/VEDictionary-MintTwister/blob/main/LICENSE
 [product-screenshot]: src\resources\screenshot1.png
-

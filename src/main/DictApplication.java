@@ -27,7 +27,7 @@ public class DictApplication extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-            Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+            Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
             mainMenuController mainMenuController = loader.getController();
             Image icon = new Image("icon.jpg");
             stage.getIcons().add(icon);
