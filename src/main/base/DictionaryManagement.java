@@ -92,10 +92,10 @@ public class DictionaryManagement extends Dictionary {
     public void dictionaryLookup() {
         Scanner scanner = new Scanner(System.in);
         int query;
+        Collections.sort(listWord); // Sort the list once after loading all words
         do {
             System.out.print("Enter the word: ");
-            String wordTarget = scanner.nextLine();
-            Collections.sort(listWord);
+            String wordTarget = scanner.nextLine().replaceAll("\\s", "");
             int idx = Collections.binarySearch(listWord, new Word(wordTarget, null, null));
             if (idx >= 0) {
                 System.out.println(listWord.get(idx).getWordPronunciation());
@@ -105,7 +105,12 @@ public class DictionaryManagement extends Dictionary {
             }
 
             System.out.print("Do you want to continue to look up? Yes(1) No(2): ");
-            query = Integer.parseInt(scanner.nextLine());
+            try {
+                query = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter 1 for Yes or 2 for No.");
+                query = 2; // Default to No if input is invalid
+            }
         } while (query == 1);
     }
         public static void exportToFile() {

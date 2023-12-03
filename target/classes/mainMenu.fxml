@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainMenuController">
    <children>
       <ImageView fx:id="bgImage" fitHeight="736.0" fitWidth="1341.0" layoutX="-61.0" layoutY="-15.0" mouseTransparent="true" opacity="0.3" style="-fx-blend-mode: screen;">
          <image>
@@ -21,25 +22,20 @@
          </image>
       </ImageView>
       <MenuBar layoutY="-5.0" prefHeight="38.0" prefWidth="1282.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
+         <menus>
+            <Menu mnemonicParsing="false" text="File">
+               <items>
                   <MenuItem fx:id="importFile" mnemonicParsing="false" onAction="#importFromFile" text="Nhập từ file" />
                   <MenuItem fx:id="exportFile" mnemonicParsing="false" onAction="#exportToFile" text="Xuất thành file" />
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
+                  <MenuItem mnemonicParsing="false" text="Close" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem fx:id="aboutItem" mnemonicParsing="false" onAction="#showAbout" text="About" />
+               </items>
+            </Menu>
+         </menus>
       </MenuBar>
       <Label layoutX="7.0" layoutY="35.0" prefHeight="33.0" prefWidth="170.0" text="ミントツイスター。">
          <font>
@@ -99,7 +95,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="gameButton" layoutX="1120.0" layoutY="614.0" mnemonicParsing="false" onAction="#launchHangMan" text="Game">
+      <Button fx:id="gameButton" layoutX="1120.0" layoutY="614.0" mnemonicParsing="false" onAction="#showGameDialog" text="Game">
          <font>
             <Font name="Roboto Mono Regular" size="18.0" />
          </font>
@@ -139,5 +135,19 @@
             <Font name="Roboto Mono Regular" size="12.0" />
          </font>
       </TextField>
+      <Button fx:id="addToFavouriteButton" contentDisplay="GRAPHIC_ONLY" layoutX="1012.0" layoutY="530.0" mnemonicParsing="false" onAction="#toggleFavourite" text="Button">
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@/addFavIcon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <CheckBox fx:id="favouriteCheckBox" layoutX="51.0" layoutY="76.0" mnemonicParsing="false" onAction="#showFavourites" text="Show only favourited words">
+         <font>
+            <Font name="Roboto Mono Regular" size="14.0" />
+         </font>
+      </CheckBox>
    </children>
 </AnchorPane>
