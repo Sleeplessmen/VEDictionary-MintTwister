@@ -18,7 +18,7 @@
 --
 -- Table structure for table `dictionary`
 --
-
+create database project;
 use project;
 DROP TABLE IF EXISTS `dictionary`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -29,7 +29,7 @@ CREATE TABLE `dictionary` (
   `Explanation` mediumtext,
   `Favourite` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Word`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
