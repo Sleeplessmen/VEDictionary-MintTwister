@@ -26,12 +26,7 @@
                               <ToggleGroup fx:id="Themes" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="themePrimierDark" layoutX="100.0" layoutY="384.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
-                           <font>
-                              <Font name="Roboto Mono Regular" size="32.0" />
-                           </font>
-                        </RadioButton>
-                        <RadioButton fx:id="themeDracula" layoutX="100.0" layoutY="462.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
+                        <RadioButton fx:id="themeDracula" layoutX="98.0" layoutY="306.0" mnemonicParsing="false" onAction="#getTheme" prefHeight="70.0" prefWidth="170.0" text="Dracula" toggleGroup="$Themes">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
@@ -41,11 +36,6 @@
                               <Font name="Roboto Mono Regular" size="48.0" />
                            </font>
                         </Label>
-                        <RadioButton fx:id="themeCupertinoDark" layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
-                           <font>
-                              <Font name="Roboto Mono Regular" size="32.0" />
-                           </font>
-                        </RadioButton>
                         <Label layoutX="100.0" layoutY="121.0" text="Dark">
                            <font>
                               <Font name="Roboto Mono Regular" size="36.0" />
@@ -57,16 +47,6 @@
                            </font>
                         </Label>
                         <RadioButton fx:id="themeNordLight" layoutX="503.0" layoutY="215.0" mnemonicParsing="false" onAction="#getTheme" text="Nord" toggleGroup="$Themes">
-                           <font>
-                              <Font name="Roboto Mono Regular" size="32.0" />
-                           </font>
-                        </RadioButton>
-                        <RadioButton fx:id="themePrimierLight" layoutX="503.0" layoutY="386.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
-                           <font>
-                              <Font name="Roboto Mono Regular" size="32.0" />
-                           </font>
-                        </RadioButton>
-                        <RadioButton fx:id="themeCupertinoLight" layoutX="503.0" layoutY="302.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>

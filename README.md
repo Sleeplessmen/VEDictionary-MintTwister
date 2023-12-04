@@ -175,6 +175,7 @@ Here's the things we used to create this project
 * [RapidAPI](https://rapidapi.com/googlecloud/api/google-translate1)
 * [VoiceRSS](https://www.voicerss.org/)
 * [ChatGPT](https://chat.openai.com/)
+* [AtlantaFX](https://github.com/mkpaz/atlantafx)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
