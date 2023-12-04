@@ -98,13 +98,12 @@ To get a local copy up and running follow these simple example steps.
 * Add a new user:
 * Name: root
 * Password: minttwister
-* Enable option [o] Create database with same name and grant all privileges.
-* Import dictionary.sql into the database en-vi-dictionary (src/resources/dictionary.sql).
+* Create and Import dictionary.sql into the database dict2 (src/resources/dictionary.sql).
 Note: You can configure your own username, port, password, ... by changing those accordingly in src/main/base/DBDictionary.java
 * After uploading the dictionary.sql file, next time you only need to start XAMPP (Start Apache and MYSQL) if you want to use the dictionary with MYSQL Database.
 * Import necessary libraries to the project, you can find it in the lib folder
 * Navigate to src/main/DictApplication.java to run the GUI version.
-* Run the main function in DictionaryCommandline.java to run the CLI version.
+* Run the main function in src/main/base/DictionaryCommandline.java to run the CLI version.
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

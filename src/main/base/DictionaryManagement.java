@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.*;
 
 public class DictionaryManagement extends Dictionary {
-    private static final String INPUTFILEPATH = "src/resources/FirstverDictionary.txt";
     private static final String OUTPUTFILEPATH = "src/resources/OutputDictionaryFile.txt";
     private static final String fileName = "src/resources/anhviet109K.txt";
 
