@@ -24,7 +24,8 @@ public class settingController implements Initializable {
     private ToggleGroup Themes;
 
     @FXML
-    private RadioButton themeDracula, themeNordDark, themeNordLight;
+    private RadioButton themeDracula, themeNordDark,themePrimierDark, themeCupertinoDark,
+            themeNordLight,themePrimierLight, themeCupertinoLight;
 
     @FXML
     private RadioButton voiceENUS, voiceENUK, voiceENAUS, voiceENCA,voiceENIN,voiceENIRL;
@@ -54,8 +55,16 @@ public class settingController implements Initializable {
             Application.setUserAgentStylesheet(new Dracula().getUserAgentStylesheet());
         } else if (themeNordDark.isSelected()) {
             Application.setUserAgentStylesheet(new NordDark().getUserAgentStylesheet());
+        } else if (themePrimierDark.isSelected()) {
+            Application.setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
+        } else if (themeCupertinoDark.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoDark().getUserAgentStylesheet());
         } else if (themeNordLight.isSelected()) {
             Application.setUserAgentStylesheet(new NordLight().getUserAgentStylesheet());
+        } else if (themePrimierLight.isSelected()) {
+            Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
+        } else if (themeCupertinoLight.isSelected()) {
+            Application.setUserAgentStylesheet(new CupertinoLight().getUserAgentStylesheet());
         }
     }
 
