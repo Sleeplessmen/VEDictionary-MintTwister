@@ -154,6 +154,40 @@ public class mainMenuController implements Initializable {
     }
 
     @FXML
+    public ObservableList<Word> readDictionaryFile(String path) {
+        ObservableList<Word> wordList = FXCollections.observableArrayList();
+        String wordTarget = "";
+        String wordExplain = "";
+        String wordPronunciation = "";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            Word currentWord = null;
+
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    String[] parts = line.split("\\s{2,}", 3);
+                    if (parts.length == 3) {
+                        wordTarget = parts[0].trim();
+                        wordPronunciation = parts[1].trim();
+                        String explanation = parts[2].trim();
+
+                        currentWord = new Word(wordTarget, explanation, wordPronunciation);
+                        wordList.add(currentWord);
+                    } else if (currentWord != null) {
+                        currentWord.appendExplanation(line);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return wordList;
+    }
+
+
+    @FXML
     void exportToFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -169,7 +203,7 @@ public class mainMenuController implements Initializable {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
             String format = "%-15s %-20s %-15s%n";
             for (Word word : allWords) {
-                bufferedWriter.write(String.format(format, word.getWordTarget(), "/" + word.getWordPronunciation() + "/", word.getWordExplain()));
+                bufferedWriter.write(String.format(format, word.getWordTarget(), word.getWordPronunciation() , word.getWordExplain()));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -183,7 +217,7 @@ public class mainMenuController implements Initializable {
         fileChooser.getExtensionFilters().add(extFilter);
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
-            allWords = insertFromFile(selectedFile.getPath());
+            allWords = readDictionaryFile(selectedFile.getPath());
             filteredWords = new FilteredList<>(allWords);
             wordList.setItems(filteredWords);
         }

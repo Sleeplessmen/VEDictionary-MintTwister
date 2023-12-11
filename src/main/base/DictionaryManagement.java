@@ -4,7 +4,7 @@ import java.util.*;
 
 public class DictionaryManagement extends Dictionary {
     private static final String OUTPUTFILEPATH = "src/resources/OutputDictionaryFile.txt";
-    private static final String fileName = "src/resources/anhviet109K.txt";
+    private static final String FILENAME = "src/resources/anhviet109K.txt";
 
 
     public void showAllWords() {
@@ -52,7 +52,7 @@ public class DictionaryManagement extends Dictionary {
 
 
     public void insertWordFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILENAME))) {
             String line;
             String wordTarget = "";
             StringBuilder wordExplain = new StringBuilder();

@@ -13,10 +13,10 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="settingController">
    <children>
       <TabPane prefHeight="600.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <tabs>
-          <Tab text="Chủ đề">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+         <tabs>
+            <Tab text="Chủ đề">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <RadioButton fx:id="themeNordDark" layoutX="100.0" layoutY="213.0" mnemonicParsing="false" onAction="#getTheme" text="Nord">
                            <font>
@@ -26,7 +26,12 @@
                               <ToggleGroup fx:id="Themes" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="themeDracula" layoutX="98.0" layoutY="306.0" mnemonicParsing="false" onAction="#getTheme" prefHeight="70.0" prefWidth="170.0" text="Dracula" toggleGroup="$Themes">
+                        <RadioButton fx:id="themePrimierDark" layoutX="100.0" layoutY="384.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeDracula" layoutX="100.0" layoutY="462.0" mnemonicParsing="false" onAction="#getTheme" text="Dracula" toggleGroup="$Themes">
                            <font>
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
@@ -36,6 +41,11 @@
                               <Font name="Roboto Mono Regular" size="48.0" />
                            </font>
                         </Label>
+                        <RadioButton fx:id="themeCupertinoDark" layoutX="100.0" layoutY="300.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
                         <Label layoutX="100.0" layoutY="121.0" text="Dark">
                            <font>
                               <Font name="Roboto Mono Regular" size="36.0" />
@@ -51,13 +61,23 @@
                               <Font name="Roboto Mono Regular" size="32.0" />
                            </font>
                         </RadioButton>
+                        <RadioButton fx:id="themePrimierLight" layoutX="503.0" layoutY="386.0" mnemonicParsing="false" onAction="#getTheme" text="Primier" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="themeCupertinoLight" layoutX="503.0" layoutY="302.0" mnemonicParsing="false" onAction="#getTheme" text="Cupertino" toggleGroup="$Themes">
+                           <font>
+                              <Font name="Roboto Mono Regular" size="32.0" />
+                           </font>
+                        </RadioButton>
                      </children>
                   </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Giọng đọc TTS">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               </content>
+            </Tab>
+            <Tab text="Giọng đọc TTS">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <RadioButton fx:id="voiceENUS" layoutX="114.0" layoutY="138.0" mnemonicParsing="false" onAction="#getVoice" selected="true" text="Anh - Mỹ">
                            <font>
@@ -98,9 +118,9 @@
                            </font>
                         </Label>
                      </children></AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
+               </content>
+            </Tab>
+         </tabs>
       </TabPane>
       <ImageView blendMode="SCREEN" fitHeight="600.0" fitWidth="800.0" mouseTransparent="true" opacity="0.4">
          <image>

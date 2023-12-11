@@ -41,6 +41,9 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#inheritance-tree">Inheritance Tree</a></li>
+      </ul>
+      <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -63,8 +66,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-![Screenshot_2](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/screenshot1.png)
+### Inheritance Tree
+![Inheritance_Tree](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/caykethua.png)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
