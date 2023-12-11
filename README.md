@@ -67,7 +67,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 ### Inheritance Tree
-![Inheritance_Tree](https://raw.githubusercontent.com/Sleeplessmen/VEDictionary-MintTwister/testUI/src/resources/caykethua.png)
+![Inheritance_Tree](https://github.com/Sleeplessmen/VEDictionary-MintTwister/blob/main/src/resources/caykethua.png?raw=true)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
